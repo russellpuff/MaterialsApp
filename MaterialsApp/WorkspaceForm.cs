@@ -12,9 +12,19 @@ namespace MaterialsApp
 {
     public partial class WorkspaceForm : Form
     {
-        public WorkspaceForm()
+        public WorkspaceForm(string segType, string segName, int segID, bool isNew = true)
         {
             InitializeComponent();
+
+            if (!isNew)
+            {
+                // Populate the data grid with existing data associated with the ID. 
+            }
+        }
+
+        private void CloseWorkspaceButton_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
