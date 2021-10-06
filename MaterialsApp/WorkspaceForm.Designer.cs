@@ -29,74 +29,236 @@ namespace MaterialsApp
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.addItemButton = new System.Windows.Forms.Button();
             this.cancelWorkspaceButton = new System.Windows.Forms.Button();
-            this.acceptWorkspaceButton = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.saveWorkspaceButton = new System.Windows.Forms.Button();
+            this.workspaceDataGrid = new System.Windows.Forms.DataGridView();
+            this.deleteItemButton = new System.Windows.Forms.Button();
+            this.workspaceTableLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.itemComboBox = new System.Windows.Forms.ComboBox();
+            this.materialComboBox = new System.Windows.Forms.ComboBox();
+            this.sizeDescTextBox = new System.Windows.Forms.TextBox();
+            this.quantityTextBox = new System.Windows.Forms.TextBox();
+            this.unitCostTextBox = new System.Windows.Forms.TextBox();
+            this.itemNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.materialNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sizeDescColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.quantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.unitCostColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalCostColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.workspaceDataGrid)).BeginInit();
+            this.workspaceTableLayout.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // addItemButton
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 603);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Ben\'s stuff";
+            this.addItemButton.Location = new System.Drawing.Point(3, 449);
+            this.addItemButton.Name = "addItemButton";
+            this.addItemButton.Size = new System.Drawing.Size(148, 43);
+            this.addItemButton.TabIndex = 4;
+            this.addItemButton.Text = "Add Item";
+            this.addItemButton.UseVisualStyleBackColor = true;
+            this.addItemButton.Click += new System.EventHandler(this.AddItemButton_Click);
             // 
             // cancelWorkspaceButton
             // 
-            this.cancelWorkspaceButton.Location = new System.Drawing.Point(936, 599);
+            this.cancelWorkspaceButton.Location = new System.Drawing.Point(1049, 449);
             this.cancelWorkspaceButton.Name = "cancelWorkspaceButton";
-            this.cancelWorkspaceButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelWorkspaceButton.TabIndex = 1;
-            this.cancelWorkspaceButton.Text = "Close";
+            this.cancelWorkspaceButton.Size = new System.Drawing.Size(98, 43);
+            this.cancelWorkspaceButton.TabIndex = 5;
+            this.cancelWorkspaceButton.Text = "Cancel";
             this.cancelWorkspaceButton.UseVisualStyleBackColor = true;
-            this.cancelWorkspaceButton.Click += new System.EventHandler(this.CloseWorkspaceButton_Click);
             // 
-            // acceptWorkspaceButton
+            // saveWorkspaceButton
             // 
-            this.acceptWorkspaceButton.Location = new System.Drawing.Point(823, 599);
-            this.acceptWorkspaceButton.Name = "acceptWorkspaceButton";
-            this.acceptWorkspaceButton.Size = new System.Drawing.Size(75, 23);
-            this.acceptWorkspaceButton.TabIndex = 2;
-            this.acceptWorkspaceButton.Text = "Accept";
-            this.acceptWorkspaceButton.UseVisualStyleBackColor = true;
+            this.saveWorkspaceButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.workspaceTableLayout.SetColumnSpan(this.saveWorkspaceButton, 2);
+            this.saveWorkspaceButton.ImageAlign = System.Drawing.ContentAlignment.TopRight;
+            this.saveWorkspaceButton.Location = new System.Drawing.Point(945, 449);
+            this.saveWorkspaceButton.Name = "saveWorkspaceButton";
+            this.saveWorkspaceButton.Size = new System.Drawing.Size(98, 43);
+            this.saveWorkspaceButton.TabIndex = 6;
+            this.saveWorkspaceButton.Text = "Save";
+            this.saveWorkspaceButton.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // workspaceDataGrid
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(406, 211);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 3;
+            this.workspaceDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.workspaceDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.itemNameColumn,
+            this.materialNameColumn,
+            this.sizeDescColumn,
+            this.quantityColumn,
+            this.unitCostColumn,
+            this.totalCostColumn});
+            this.workspaceTableLayout.SetColumnSpan(this.workspaceDataGrid, 6);
+            this.workspaceDataGrid.Location = new System.Drawing.Point(3, 41);
+            this.workspaceDataGrid.Name = "workspaceDataGrid";
+            this.workspaceDataGrid.RowHeadersVisible = false;
+            this.workspaceDataGrid.RowTemplate.Height = 25;
+            this.workspaceDataGrid.Size = new System.Drawing.Size(1144, 394);
+            this.workspaceDataGrid.TabIndex = 7;
+            // 
+            // deleteItemButton
+            // 
+            this.deleteItemButton.Location = new System.Drawing.Point(157, 449);
+            this.deleteItemButton.Name = "deleteItemButton";
+            this.deleteItemButton.Size = new System.Drawing.Size(144, 43);
+            this.deleteItemButton.TabIndex = 8;
+            this.deleteItemButton.Text = "Delete Item";
+            this.deleteItemButton.UseVisualStyleBackColor = true;
+            // 
+            // workspaceTableLayout
+            // 
+            this.workspaceTableLayout.ColumnCount = 6;
+            this.workspaceTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 154F));
+            this.workspaceTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.workspaceTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 542F));
+            this.workspaceTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.workspaceTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.workspaceTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.workspaceTableLayout.Controls.Add(this.unitCostTextBox, 4, 0);
+            this.workspaceTableLayout.Controls.Add(this.workspaceDataGrid, 0, 2);
+            this.workspaceTableLayout.Controls.Add(this.cancelWorkspaceButton, 5, 4);
+            this.workspaceTableLayout.Controls.Add(this.addItemButton, 0, 4);
+            this.workspaceTableLayout.Controls.Add(this.itemComboBox, 0, 0);
+            this.workspaceTableLayout.Controls.Add(this.materialComboBox, 1, 0);
+            this.workspaceTableLayout.Controls.Add(this.sizeDescTextBox, 2, 0);
+            this.workspaceTableLayout.Controls.Add(this.quantityTextBox, 3, 0);
+            this.workspaceTableLayout.Controls.Add(this.deleteItemButton, 1, 4);
+            this.workspaceTableLayout.Controls.Add(this.saveWorkspaceButton, 3, 4);
+            this.workspaceTableLayout.Location = new System.Drawing.Point(12, 12);
+            this.workspaceTableLayout.Name = "workspaceTableLayout";
+            this.workspaceTableLayout.RowCount = 5;
+            this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
+            this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 400F));
+            this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
+            this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.workspaceTableLayout.Size = new System.Drawing.Size(1150, 495);
+            this.workspaceTableLayout.TabIndex = 9;
+            // 
+            // itemComboBox
+            // 
+            this.itemComboBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.itemComboBox.FormattingEnabled = true;
+            this.itemComboBox.Location = new System.Drawing.Point(3, 4);
+            this.itemComboBox.Name = "itemComboBox";
+            this.itemComboBox.Size = new System.Drawing.Size(148, 23);
+            this.itemComboBox.TabIndex = 9;
+            // 
+            // materialComboBox
+            // 
+            this.materialComboBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.materialComboBox.FormattingEnabled = true;
+            this.materialComboBox.Location = new System.Drawing.Point(157, 4);
+            this.materialComboBox.Name = "materialComboBox";
+            this.materialComboBox.Size = new System.Drawing.Size(144, 23);
+            this.materialComboBox.TabIndex = 10;
+            // 
+            // sizeDescTextBox
+            // 
+            this.sizeDescTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.sizeDescTextBox.Location = new System.Drawing.Point(307, 4);
+            this.sizeDescTextBox.Name = "sizeDescTextBox";
+            this.sizeDescTextBox.Size = new System.Drawing.Size(536, 23);
+            this.sizeDescTextBox.TabIndex = 11;
+            // 
+            // quantityTextBox
+            // 
+            this.quantityTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.quantityTextBox.Location = new System.Drawing.Point(849, 4);
+            this.quantityTextBox.Name = "quantityTextBox";
+            this.quantityTextBox.Size = new System.Drawing.Size(94, 23);
+            this.quantityTextBox.TabIndex = 12;
+            // 
+            // unitCostTextBox
+            // 
+            this.unitCostTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.unitCostTextBox.Location = new System.Drawing.Point(949, 4);
+            this.unitCostTextBox.Name = "unitCostTextBox";
+            this.unitCostTextBox.Size = new System.Drawing.Size(94, 23);
+            this.unitCostTextBox.TabIndex = 13;
+            // 
+            // itemNameColumn
+            // 
+            this.itemNameColumn.HeaderText = "Item";
+            this.itemNameColumn.Name = "itemNameColumn";
+            this.itemNameColumn.ReadOnly = true;
+            this.itemNameColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.itemNameColumn.Width = 150;
+            // 
+            // materialNameColumn
+            // 
+            this.materialNameColumn.HeaderText = "Material";
+            this.materialNameColumn.Name = "materialNameColumn";
+            this.materialNameColumn.ReadOnly = true;
+            this.materialNameColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.materialNameColumn.Width = 150;
+            // 
+            // sizeDescColumn
+            // 
+            this.sizeDescColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.sizeDescColumn.HeaderText = "Size / Description";
+            this.sizeDescColumn.Name = "sizeDescColumn";
+            this.sizeDescColumn.ReadOnly = true;
+            this.sizeDescColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // quantityColumn
+            // 
+            this.quantityColumn.HeaderText = "Quantity";
+            this.quantityColumn.Name = "quantityColumn";
+            this.quantityColumn.ReadOnly = true;
+            this.quantityColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // unitCostColumn
+            // 
+            this.unitCostColumn.HeaderText = "Unit Cost";
+            this.unitCostColumn.Name = "unitCostColumn";
+            this.unitCostColumn.ReadOnly = true;
+            this.unitCostColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // totalCostColumn
+            // 
+            this.totalCostColumn.HeaderText = "Total Cost";
+            this.totalCostColumn.Name = "totalCostColumn";
+            this.totalCostColumn.ReadOnly = true;
+            this.totalCostColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
             // WorkspaceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1209, 650);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.acceptWorkspaceButton);
-            this.Controls.Add(this.cancelWorkspaceButton);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(1175, 526);
+            this.Controls.Add(this.workspaceTableLayout);
             this.Name = "WorkspaceForm";
             this.Text = "WorkspaceForm";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.WorkspaceForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.workspaceDataGrid)).EndInit();
+            this.workspaceTableLayout.ResumeLayout(false);
+            this.workspaceTableLayout.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button addItemButton;
         private System.Windows.Forms.Button cancelWorkspaceButton;
-        private System.Windows.Forms.Button acceptWorkspaceButton;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button saveWorkspaceButton;
+        private System.Windows.Forms.DataGridView workspaceDataGrid;
+        private System.Windows.Forms.Button deleteItemButton;
+        private System.Windows.Forms.TableLayoutPanel workspaceTableLayout;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn materialNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sizeDescColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn quantityColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn unitCostColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalCostColumn;
+        private System.Windows.Forms.TextBox unitCostTextBox;
+        private System.Windows.Forms.ComboBox itemComboBox;
+        private System.Windows.Forms.ComboBox materialComboBox;
+        private System.Windows.Forms.TextBox sizeDescTextBox;
+        private System.Windows.Forms.TextBox quantityTextBox;
     }
 }

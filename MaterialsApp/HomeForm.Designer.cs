@@ -49,7 +49,7 @@ namespace MaterialsApp
             this.labelone.TabIndex = 0;
             this.labelone.Text = resources.GetString("labelone.Text");
             // 
-            // dataGridView1
+            // workspaceDataGrid
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 105);
