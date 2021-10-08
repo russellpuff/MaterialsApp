@@ -68,6 +68,7 @@ namespace MaterialsApp
             this.cancelWorkspaceButton.TabIndex = 5;
             this.cancelWorkspaceButton.Text = "Cancel";
             this.cancelWorkspaceButton.UseVisualStyleBackColor = true;
+            this.cancelWorkspaceButton.Click += new System.EventHandler(this.CancelWorkspaceButton_Click);
             // 
             // saveWorkspaceButton
             // 
@@ -158,7 +159,7 @@ namespace MaterialsApp
             this.deleteItemButton.TabIndex = 8;
             this.deleteItemButton.Text = "Delete Item";
             this.deleteItemButton.UseVisualStyleBackColor = true;
-            this.deleteItemButton.Click += new System.EventHandler(this.deleteItemButton_Click);
+            this.deleteItemButton.Click += new System.EventHandler(this.DeleteItemButton_Click);
             // 
             // workspaceTableLayout
             // 
@@ -248,7 +249,7 @@ namespace MaterialsApp
             this.ClientSize = new System.Drawing.Size(1175, 526);
             this.Controls.Add(this.workspaceTableLayout);
             this.Name = "WorkspaceForm";
-            this.Text = "WorkspaceForm";
+            this.Text = "Workspace";
             this.Load += new System.EventHandler(this.WorkspaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.workspaceDataGrid)).EndInit();
             this.workspaceTableLayout.ResumeLayout(false);

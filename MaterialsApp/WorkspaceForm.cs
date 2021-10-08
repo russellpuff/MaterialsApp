@@ -15,6 +15,7 @@ namespace MaterialsApp
     public partial class WorkspaceForm : Form
     {
         string segmentType;
+        bool isDirty = false; // unsaved changes
 
         public WorkspaceForm(string segType, string segName, int segID, bool isNew = true)
         {
@@ -79,6 +80,7 @@ namespace MaterialsApp
                 sizeDescTextBox.Text = string.Empty;
                 quantityTextBox.Text = string.Empty;
                 unitCostTextBox.Text = string.Empty;
+                isDirty = true;
             } else
             {
                 System.Media.SystemSounds.Hand.Play();
@@ -291,13 +293,13 @@ namespace MaterialsApp
                     temp.Add("Gypsum mud");
                     break;
                 case "Paint":
-                    SegmentItemEntry pnt = new();
-                    return pnt.PaintMats;
+                    List<string> pnt = new() { "Chalk", "Chalkboard", "Enamel", "Latex-Based", "Oil-based", "Water-Based" };
+                    return pnt;
             }
             return temp;
         }
 
-        private void deleteItemButton_Click(object sender, EventArgs e)
+        private void DeleteItemButton_Click(object sender, EventArgs e)
         {
             int f = workspaceDataGrid.CurrentCell.RowIndex;
             string deleteMsg = "Are you sure you want to delete this " + workspaceDataGrid.CurrentRow.Cells[0].Value.ToString() + " item?";
@@ -306,6 +308,22 @@ namespace MaterialsApp
             if (result == DialogResult.Yes)
             {
                 workspaceDataGrid.Rows.Remove(workspaceDataGrid.Rows[f]);
+            }
+        }
+
+        private void CancelWorkspaceButton_Click(object sender, EventArgs e)
+        {
+            if (isDirty)
+            {
+                DialogResult result;
+                result = MessageBox.Show("You have unsaved changes, are you sure you want to close the form?", "Unsaved changes", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    this.Close();
+                }
+            } else
+            {
+                this.Close();
             }
         }
     }
@@ -338,15 +356,6 @@ namespace MaterialsApp
             "Paint", // custom entry only
             "Rebar", // steel
             "Screws" // galvanized steel
-        };
-        public readonly List<string> PaintMats = new()
-        {
-            "Oil-based",
-            "Chalkboard",
-            "Chalk",
-            "Enamel",
-            "Latex-Based",
-            "Water-Based",
         };
     }
 
