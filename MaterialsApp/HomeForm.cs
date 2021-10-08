@@ -42,9 +42,8 @@ namespace MaterialsApp
                 {
                     seg.SegTable = ws.WsTable;
                     workspaceReturnTotal = ws.ReturnTotal; // This is the total cost of the workspace segment. Add this to the datagridview and calculate the grand total from all returns. 
-                    dataGridView1.Rows.Add(seg.SegType);
-                    dataGridView1.Rows.Add(seg.SegName);
-                    dataGridView1.Rows.Add(seg.SegId);
+                    string[] row = new string[4] { seg.SegType, seg.SegName, workspaceReturnTotal, seg.SegId.ToString() };
+                    homeDataGrid.Rows.Add(row);
                 }
                 this.Enabled = true;
             }
