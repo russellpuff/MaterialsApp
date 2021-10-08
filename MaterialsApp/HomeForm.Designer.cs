@@ -29,83 +29,20 @@ namespace MaterialsApp
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeForm));
-            this.labelone = new System.Windows.Forms.Label();
-            this.homeDataGrid = new System.Windows.Forms.DataGridView();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             this.newSegmentButton = new System.Windows.Forms.Button();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Total = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.homeDataGrid)).BeginInit();
+            this.hDataGrid = new System.Windows.Forms.DataGridView();
+            this.typeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.editSegmentButton = new System.Windows.Forms.Button();
+            this.deleteSegmentButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.hDataGrid)).BeginInit();
             this.SuspendLayout();
-            // 
-            // labelone
-            // 
-            this.labelone.AutoSize = true;
-            this.labelone.Location = new System.Drawing.Point(12, 295);
-            this.labelone.Name = "labelone";
-            this.labelone.Size = new System.Drawing.Size(377, 60);
-            this.labelone.TabIndex = 0;
-            this.labelone.Text = resources.GetString("labelone.Text");
-            // 
-            // homeDataGrid
-            // 
-            this.homeDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.homeDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Type,
-            this.Name,
-            this.Total,
-            this.ID});
-            this.homeDataGrid.Location = new System.Drawing.Point(12, 105);
-            this.homeDataGrid.Name = "homeDataGrid";
-            this.homeDataGrid.RowTemplate.Height = 25;
-            this.homeDataGrid.Size = new System.Drawing.Size(343, 150);
-            this.homeDataGrid.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(438, 105);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(350, 60);
-            this.label2.TabIndex = 2;
-            this.label2.Text = resources.GetString("label2.Text");
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 26);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(436, 45);
-            this.label3.TabIndex = 3;
-            this.label3.Text = resources.GetString("label3.Text");
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(519, 387);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(146, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "[PH] Print Report";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(567, 426);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(64, 15);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "do this last";
             // 
             // newSegmentButton
             // 
-            this.newSegmentButton.Location = new System.Drawing.Point(438, 232);
+            this.newSegmentButton.Location = new System.Drawing.Point(12, 386);
             this.newSegmentButton.Name = "newSegmentButton";
             this.newSegmentButton.Size = new System.Drawing.Size(75, 23);
             this.newSegmentButton.TabIndex = 6;
@@ -113,62 +50,95 @@ namespace MaterialsApp
             this.newSegmentButton.UseVisualStyleBackColor = true;
             this.newSegmentButton.Click += new System.EventHandler(this.NewSegmentButton_Click);
             // 
-            // Type
+            // hDataGrid
             // 
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
+            this.hDataGrid.AllowUserToAddRows = false;
+            this.hDataGrid.AllowUserToDeleteRows = false;
+            this.hDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.hDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.typeColumn,
+            this.nameColumn,
+            this.costColumn,
+            this.idColumn});
+            this.hDataGrid.Location = new System.Drawing.Point(12, 36);
+            this.hDataGrid.Name = "hDataGrid";
+            this.hDataGrid.ReadOnly = true;
+            this.hDataGrid.RowHeadersVisible = false;
+            this.hDataGrid.RowTemplate.Height = 25;
+            this.hDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.hDataGrid.Size = new System.Drawing.Size(303, 333);
+            this.hDataGrid.TabIndex = 7;
             // 
-            // Name
+            // typeColumn
             // 
-            this.Name.HeaderText = "Name";
-            this.Name.Name = "Name";
+            this.typeColumn.HeaderText = "Type";
+            this.typeColumn.Name = "typeColumn";
+            this.typeColumn.ReadOnly = true;
             // 
-            // Total
+            // nameColumn
             // 
-            this.Total.HeaderText = "Total";
-            this.Total.Name = "Total";
+            this.nameColumn.HeaderText = "Name";
+            this.nameColumn.Name = "nameColumn";
+            this.nameColumn.ReadOnly = true;
             // 
-            // ID
+            // costColumn
             // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.Visible = false;
+            this.costColumn.HeaderText = "Cost";
+            this.costColumn.Name = "costColumn";
+            this.costColumn.ReadOnly = true;
+            // 
+            // idColumn
+            // 
+            this.idColumn.HeaderText = "ID";
+            this.idColumn.Name = "idColumn";
+            this.idColumn.ReadOnly = true;
+            this.idColumn.Visible = false;
+            // 
+            // editSegmentButton
+            // 
+            this.editSegmentButton.Location = new System.Drawing.Point(125, 386);
+            this.editSegmentButton.Name = "editSegmentButton";
+            this.editSegmentButton.Size = new System.Drawing.Size(75, 23);
+            this.editSegmentButton.TabIndex = 8;
+            this.editSegmentButton.Text = "Edit";
+            this.editSegmentButton.UseVisualStyleBackColor = true;
+            // 
+            // deleteSegmentButton
+            // 
+            this.deleteSegmentButton.Location = new System.Drawing.Point(240, 386);
+            this.deleteSegmentButton.Name = "deleteSegmentButton";
+            this.deleteSegmentButton.Size = new System.Drawing.Size(75, 23);
+            this.deleteSegmentButton.TabIndex = 9;
+            this.deleteSegmentButton.Text = "Delete";
+            this.deleteSegmentButton.UseVisualStyleBackColor = true;
             // 
             // HomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(330, 577);
+            this.Controls.Add(this.deleteSegmentButton);
+            this.Controls.Add(this.editSegmentButton);
+            this.Controls.Add(this.hDataGrid);
             this.Controls.Add(this.newSegmentButton);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.homeDataGrid);
-            this.Controls.Add(this.labelone);
             this.MaximizeBox = false;
             this.Name = "HomeForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.homeDataGrid)).EndInit();
+            this.Text = "Materials Cost Estimator";
+            ((System.ComponentModel.ISupportInitialize)(this.hDataGrid)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label labelone;
-        private System.Windows.Forms.DataGridView homeDataGrid;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button newSegmentButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Total;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
+        private System.Windows.Forms.DataGridView hDataGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn typeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
+        private System.Windows.Forms.Button editSegmentButton;
+        private System.Windows.Forms.Button deleteSegmentButton;
     }
 }
 

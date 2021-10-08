@@ -344,9 +344,7 @@ namespace MaterialsApp
                 }
             } else
             {
-                this.ReturnTotal = grandTotal.ToString();
                 this.Close();
-
             }
         }
 
@@ -359,6 +357,8 @@ namespace MaterialsApp
                 DialogResult result = MessageBox.Show("Changes saved. Do you want to continue working?", "Changes saved", MessageBoxButtons.YesNo);
                 if (result == DialogResult.No)
                 {
+                    this.ReturnTotal = grandTotal.ToString();
+                    this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
             }
