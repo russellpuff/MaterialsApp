@@ -14,6 +14,7 @@ namespace MaterialsApp
     {
         string workspaceReturnTotal;
         string workspaceGrandTotal;
+        
 
         public HomeForm()
         {
@@ -32,12 +33,18 @@ namespace MaterialsApp
                 seg.SegId = rand.Next(1, 65535);
                 seg.SegTable = new DataTable();
 
+                
+                Globals.segments.Add(seg);
+
                 WorkspaceForm ws = new(seg.SegType, seg.SegName, seg.SegTable);
                 this.Enabled = false;
                 if (ws.ShowDialog() == DialogResult.OK)
                 {
                     seg.SegTable = ws.WsTable;
                     workspaceReturnTotal = ws.ReturnTotal; // This is the total cost of the workspace segment. Add this to the datagridview and calculate the grand total from all returns. 
+                    dataGridView1.Rows.Add(seg.SegType);
+                    dataGridView1.Rows.Add(seg.SegName);
+                    dataGridView1.Rows.Add(seg.SegId);
                 }
                 this.Enabled = true;
             }
@@ -51,4 +58,11 @@ namespace MaterialsApp
         public int SegId { get; set; }
         public DataTable SegTable { get; set; }
     }
+
+    public static class Globals
+    {
+        public static List<Segment> segments = new List<Segment>();
+    }
+
+
 }
