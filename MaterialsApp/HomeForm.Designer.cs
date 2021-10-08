@@ -49,7 +49,7 @@ namespace MaterialsApp
             this.labelone.TabIndex = 0;
             this.labelone.Text = resources.GetString("labelone.Text");
             // 
-            // workspaceDataGrid
+            // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 105);
@@ -116,7 +116,9 @@ namespace MaterialsApp
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.labelone);
+            this.MaximizeBox = false;
             this.Name = "HomeForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

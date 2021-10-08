@@ -84,6 +84,7 @@ namespace MaterialsApp
             this.saveWorkspaceButton.TabIndex = 6;
             this.saveWorkspaceButton.Text = "Save";
             this.saveWorkspaceButton.UseVisualStyleBackColor = true;
+            this.saveWorkspaceButton.Click += new System.EventHandler(this.SaveWorkspaceButton_Click);
             // 
             // workspaceDataGrid
             // 
@@ -289,10 +290,13 @@ namespace MaterialsApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1175, 654);
+            this.ClientSize = new System.Drawing.Size(1175, 516);
             this.Controls.Add(this.workspaceBottomTableLayout);
             this.Controls.Add(this.workspaceTableLayout);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
             this.Name = "WorkspaceForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Workspace";
             this.Load += new System.EventHandler(this.WorkspaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.workspaceDataGrid)).EndInit();

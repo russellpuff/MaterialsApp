@@ -18,26 +18,33 @@ namespace MaterialsApp
         string segmentName;
         decimal grandTotal = 0;
         bool isDirty = false; // unsaved changes
+        bool newS = true;
         public string ReturnTotal { get; set; }
-        DataTable wsTable;
+        public DataTable WsTable { get; set; }
 
         public WorkspaceForm(string segType, string segName, DataTable segDT, bool isNew = true)
         {
             InitializeComponent();
             segmentType = segType;
-            segmentType = "Opening";
-            segmentName = "Front door";
-
-            if (!isNew)
-            {
-                // Populate the data grid with existing data associated with the ID. 
-            }
+            segmentName = segName;
+            WsTable = segDT;
+            newS = isNew;
         }
 
         private void WorkspaceForm_Load(object sender, EventArgs e)
         {
             workspaceLabel.Text = "Workspace for " + segmentType + " segment: \"" + segmentName + "\"";
             segmentTotalLabel.Text = "Grand total: " + grandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
+
+            for (int i = 0; i < workspaceDataGrid.Columns.Count; i++) // Initializes the datatable with the correct headers, regardless of new or load.
+            {
+                WsTable.Columns.Add(workspaceDataGrid.Columns[i].HeaderText);
+            }
+
+            if (!newS) // Attaches existing datatable to datagridview if the user is loading an existing segment. 
+            {
+                workspaceDataGrid.DataSource = WsTable;
+            }
 
             List<string> comboPop = new();
             SegmentItemEntry wsLoadSeg = new();
@@ -202,6 +209,7 @@ namespace MaterialsApp
                 _ => IndexIsCommonItem(),
             };
         }
+
         private List<string> SegmentIsFloor()
         {
             FloorSegment wsFloorIndex = new();
@@ -251,6 +259,7 @@ namespace MaterialsApp
                 _ => IndexIsCommonItem(),
             };
         }
+
         private List<string> SegmentIsOpening()
         {
             OpeningSegment wsOpeningIndex = new();
@@ -279,6 +288,7 @@ namespace MaterialsApp
                 _ => IndexIsCommonItem(),
             };
         }
+
         private List<string> IndexIsCommonItem()
         {
             List<string> temp = new();
@@ -339,7 +349,36 @@ namespace MaterialsApp
 
             }
         }
+
+        private void SaveWorkspaceButton_Click(object sender, EventArgs e)
+        {
+            if (isDirty)
+            {
+                DataTableBuilder();
+                isDirty = false;
+                DialogResult result = MessageBox.Show("Changes saved. Do you want to continue working?", "Changes saved", MessageBoxButtons.YesNo);
+                if (result == DialogResult.No)
+                {
+                    this.Close();
+                }
+            }
+        }
+
+        private void DataTableBuilder()
+        {
+            WsTable.Clear();
+            foreach (DataGridViewRow row in workspaceDataGrid.Rows)
+            {
+                DataRow dr = WsTable.NewRow();
+                for (int k = 0; k < workspaceDataGrid.Columns.Count; k++)
+                {
+                    dr[workspaceDataGrid.Columns[k].HeaderText] = row.Cells[k].Value;
+                }
+                WsTable.Rows.Add(dr);
+            }
+        }
     }
+
     public class SegmentItemEntry
     {
         public readonly List<string> GenericWoodMats = new()
