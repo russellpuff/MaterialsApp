@@ -19,7 +19,7 @@ namespace MaterialsApp
         decimal grandTotal = 0;
         bool isDirty = false; // unsaved changes
         bool newS = true;
-        public string ReturnTotal { get; set; }
+        public decimal ReturnTotal { get; set; }
         public DataTable WsTable { get; set; }
 
         public WorkspaceForm(string segType, string segName, DataTable segDT, bool isNew = true)
@@ -357,7 +357,7 @@ namespace MaterialsApp
                 DialogResult result = MessageBox.Show("Changes saved. Do you want to continue working?", "Changes saved", MessageBoxButtons.YesNo);
                 if (result == DialogResult.No)
                 {
-                    this.ReturnTotal = grandTotal.ToString();
+                    this.ReturnTotal = grandTotal;
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }

@@ -43,12 +43,11 @@ namespace MaterialsApp
                 if (ws.ShowDialog() == DialogResult.OK)
                 {
                     seg.SegTable = ws.WsTable;
-                    workspaceReturnTotal = Convert.ToDecimal(ws.ReturnTotal); // This is the total cost of the workspace segment. Add this to the datagridview and calculate the grand total from all returns. 
+                    workspaceReturnTotal = ws.ReturnTotal; // This is the total cost of the workspace segment. Add this to the datagridview and calculate the grand total from all returns. 
                     string[] row = new string[4] { seg.SegType, seg.SegName, Convert.ToString(workspaceReturnTotal), seg.SegId.ToString() };
                     hDataGrid.Rows.Add(row);
                     
                     homeGrandTotal += workspaceReturnTotal;
-                    
                     hlabelGrandTotal.Text = grandTotalHeader + "\n" + homeGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
                     
                 }
