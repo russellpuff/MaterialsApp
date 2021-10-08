@@ -14,7 +14,7 @@ namespace MaterialsApp
     public partial class HomeForm : Form
     {
         decimal workspaceReturnTotal;
-        decimal homeGrandTotal;
+        decimal homeGrandTotal = 0;
         const string grandTotalHeader = "Grand Total";
         
 
@@ -36,7 +36,7 @@ namespace MaterialsApp
                 seg.SegTable = new DataTable();
 
                 
-                Globals.segments.Add(seg);
+                
 
                 WorkspaceForm ws = new(seg.SegType, seg.SegName, seg.SegTable);
                 this.Enabled = false;
@@ -44,6 +44,7 @@ namespace MaterialsApp
                 {
                     seg.SegTable = ws.WsTable;
                     workspaceReturnTotal = ws.ReturnTotal; // This is the total cost of the workspace segment. Add this to the datagridview and calculate the grand total from all returns. 
+                    Globals.segments.Add(seg);
                     string[] row = new string[4] { seg.SegType, seg.SegName, Convert.ToString(workspaceReturnTotal), seg.SegId.ToString() };
                     hDataGrid.Rows.Add(row);
                     
@@ -54,6 +55,10 @@ namespace MaterialsApp
                 this.Enabled = true;
             }
         }
+
+
+
+
     }
 
     public class Segment
