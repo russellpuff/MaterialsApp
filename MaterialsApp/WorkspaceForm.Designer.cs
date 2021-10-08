@@ -46,15 +46,19 @@ namespace MaterialsApp
             this.materialComboBox = new System.Windows.Forms.ComboBox();
             this.sizeDescTextBox = new System.Windows.Forms.TextBox();
             this.quantityTextBox = new System.Windows.Forms.TextBox();
+            this.workspaceLabel = new System.Windows.Forms.Label();
+            this.workspaceBottomTableLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.segmentTotalLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.workspaceDataGrid)).BeginInit();
             this.workspaceTableLayout.SuspendLayout();
+            this.workspaceBottomTableLayout.SuspendLayout();
             this.SuspendLayout();
             // 
             // addItemButton
             // 
-            this.addItemButton.Location = new System.Drawing.Point(3, 449);
+            this.addItemButton.Location = new System.Drawing.Point(3, 3);
             this.addItemButton.Name = "addItemButton";
-            this.addItemButton.Size = new System.Drawing.Size(148, 43);
+            this.addItemButton.Size = new System.Drawing.Size(144, 39);
             this.addItemButton.TabIndex = 4;
             this.addItemButton.Text = "Add Item";
             this.addItemButton.UseVisualStyleBackColor = true;
@@ -62,9 +66,9 @@ namespace MaterialsApp
             // 
             // cancelWorkspaceButton
             // 
-            this.cancelWorkspaceButton.Location = new System.Drawing.Point(1049, 449);
+            this.cancelWorkspaceButton.Location = new System.Drawing.Point(1053, 3);
             this.cancelWorkspaceButton.Name = "cancelWorkspaceButton";
-            this.cancelWorkspaceButton.Size = new System.Drawing.Size(98, 43);
+            this.cancelWorkspaceButton.Size = new System.Drawing.Size(94, 39);
             this.cancelWorkspaceButton.TabIndex = 5;
             this.cancelWorkspaceButton.Text = "Cancel";
             this.cancelWorkspaceButton.UseVisualStyleBackColor = true;
@@ -73,11 +77,10 @@ namespace MaterialsApp
             // saveWorkspaceButton
             // 
             this.saveWorkspaceButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.workspaceTableLayout.SetColumnSpan(this.saveWorkspaceButton, 2);
             this.saveWorkspaceButton.ImageAlign = System.Drawing.ContentAlignment.TopRight;
-            this.saveWorkspaceButton.Location = new System.Drawing.Point(945, 449);
+            this.saveWorkspaceButton.Location = new System.Drawing.Point(953, 3);
             this.saveWorkspaceButton.Name = "saveWorkspaceButton";
-            this.saveWorkspaceButton.Size = new System.Drawing.Size(98, 43);
+            this.saveWorkspaceButton.Size = new System.Drawing.Size(94, 39);
             this.saveWorkspaceButton.TabIndex = 6;
             this.saveWorkspaceButton.Text = "Save";
             this.saveWorkspaceButton.UseVisualStyleBackColor = true;
@@ -98,7 +101,7 @@ namespace MaterialsApp
             this.unitCostColumn,
             this.totalCostColumn});
             this.workspaceTableLayout.SetColumnSpan(this.workspaceDataGrid, 6);
-            this.workspaceDataGrid.Location = new System.Drawing.Point(3, 41);
+            this.workspaceDataGrid.Location = new System.Drawing.Point(3, 42);
             this.workspaceDataGrid.Name = "workspaceDataGrid";
             this.workspaceDataGrid.RowHeadersVisible = false;
             this.workspaceDataGrid.RowTemplate.Height = 25;
@@ -153,9 +156,9 @@ namespace MaterialsApp
             // 
             // deleteItemButton
             // 
-            this.deleteItemButton.Location = new System.Drawing.Point(157, 449);
+            this.deleteItemButton.Location = new System.Drawing.Point(153, 3);
             this.deleteItemButton.Name = "deleteItemButton";
-            this.deleteItemButton.Size = new System.Drawing.Size(144, 43);
+            this.deleteItemButton.Size = new System.Drawing.Size(144, 39);
             this.deleteItemButton.TabIndex = 8;
             this.deleteItemButton.Text = "Delete Item";
             this.deleteItemButton.UseVisualStyleBackColor = true;
@@ -172,24 +175,19 @@ namespace MaterialsApp
             this.workspaceTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 104F));
             this.workspaceTableLayout.Controls.Add(this.unitCostTextBox, 4, 0);
             this.workspaceTableLayout.Controls.Add(this.workspaceDataGrid, 0, 2);
-            this.workspaceTableLayout.Controls.Add(this.cancelWorkspaceButton, 5, 4);
-            this.workspaceTableLayout.Controls.Add(this.addItemButton, 0, 4);
             this.workspaceTableLayout.Controls.Add(this.itemComboBox, 0, 0);
             this.workspaceTableLayout.Controls.Add(this.materialComboBox, 1, 0);
             this.workspaceTableLayout.Controls.Add(this.sizeDescTextBox, 2, 0);
             this.workspaceTableLayout.Controls.Add(this.quantityTextBox, 3, 0);
-            this.workspaceTableLayout.Controls.Add(this.deleteItemButton, 1, 4);
-            this.workspaceTableLayout.Controls.Add(this.saveWorkspaceButton, 3, 4);
             this.workspaceTableLayout.Location = new System.Drawing.Point(12, 12);
             this.workspaceTableLayout.Name = "workspaceTableLayout";
-            this.workspaceTableLayout.RowCount = 5;
+            this.workspaceTableLayout.RowCount = 3;
             this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 400F));
-            this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.workspaceTableLayout.Size = new System.Drawing.Size(1150, 495);
+            this.workspaceTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.workspaceTableLayout.Size = new System.Drawing.Size(1150, 441);
             this.workspaceTableLayout.TabIndex = 9;
             // 
             // unitCostTextBox
@@ -242,11 +240,57 @@ namespace MaterialsApp
             this.quantityTextBox.TabIndex = 12;
             this.quantityTextBox.TextChanged += new System.EventHandler(this.QuantityOrUnitCostTextBox_TextChanged);
             // 
+            // workspaceLabel
+            // 
+            this.workspaceLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.workspaceLabel.AutoSize = true;
+            this.workspaceLabel.Font = new System.Drawing.Font("Bookman Old Style", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.workspaceLabel.Location = new System.Drawing.Point(303, 12);
+            this.workspaceLabel.Name = "workspaceLabel";
+            this.workspaceLabel.Size = new System.Drawing.Size(381, 20);
+            this.workspaceLabel.TabIndex = 14;
+            this.workspaceLabel.Text = "Workspace for undefined segment: \"undefined\"";
+            this.workspaceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // workspaceBottomTableLayout
+            // 
+            this.workspaceBottomTableLayout.ColumnCount = 6;
+            this.workspaceBottomTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.workspaceBottomTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.workspaceBottomTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 450F));
+            this.workspaceBottomTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.workspaceBottomTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.workspaceBottomTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.workspaceBottomTableLayout.Controls.Add(this.segmentTotalLabel, 3, 0);
+            this.workspaceBottomTableLayout.Controls.Add(this.addItemButton, 0, 0);
+            this.workspaceBottomTableLayout.Controls.Add(this.deleteItemButton, 1, 0);
+            this.workspaceBottomTableLayout.Controls.Add(this.workspaceLabel, 2, 0);
+            this.workspaceBottomTableLayout.Controls.Add(this.cancelWorkspaceButton, 5, 0);
+            this.workspaceBottomTableLayout.Controls.Add(this.saveWorkspaceButton, 4, 0);
+            this.workspaceBottomTableLayout.Location = new System.Drawing.Point(12, 459);
+            this.workspaceBottomTableLayout.Name = "workspaceBottomTableLayout";
+            this.workspaceBottomTableLayout.RowCount = 1;
+            this.workspaceBottomTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.workspaceBottomTableLayout.Size = new System.Drawing.Size(1150, 45);
+            this.workspaceBottomTableLayout.TabIndex = 15;
+            // 
+            // segmentTotalLabel
+            // 
+            this.segmentTotalLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.segmentTotalLabel.AutoSize = true;
+            this.segmentTotalLabel.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.segmentTotalLabel.Location = new System.Drawing.Point(821, 12);
+            this.segmentTotalLabel.Name = "segmentTotalLabel";
+            this.segmentTotalLabel.Size = new System.Drawing.Size(126, 20);
+            this.segmentTotalLabel.TabIndex = 16;
+            this.segmentTotalLabel.Text = "Grand total: $0.00";
+            // 
             // WorkspaceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1175, 526);
+            this.ClientSize = new System.Drawing.Size(1175, 654);
+            this.Controls.Add(this.workspaceBottomTableLayout);
             this.Controls.Add(this.workspaceTableLayout);
             this.Name = "WorkspaceForm";
             this.Text = "Workspace";
@@ -254,6 +298,8 @@ namespace MaterialsApp
             ((System.ComponentModel.ISupportInitialize)(this.workspaceDataGrid)).EndInit();
             this.workspaceTableLayout.ResumeLayout(false);
             this.workspaceTableLayout.PerformLayout();
+            this.workspaceBottomTableLayout.ResumeLayout(false);
+            this.workspaceBottomTableLayout.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -276,5 +322,8 @@ namespace MaterialsApp
         private System.Windows.Forms.ComboBox materialComboBox;
         private System.Windows.Forms.TextBox sizeDescTextBox;
         private System.Windows.Forms.TextBox quantityTextBox;
+        private System.Windows.Forms.Label workspaceLabel;
+        private System.Windows.Forms.TableLayoutPanel workspaceBottomTableLayout;
+        private System.Windows.Forms.Label segmentTotalLabel;
     }
 }

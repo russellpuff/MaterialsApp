@@ -15,13 +15,17 @@ namespace MaterialsApp
     public partial class WorkspaceForm : Form
     {
         string segmentType;
+        string segmentName;
+        decimal grandTotal = 0;
         bool isDirty = false; // unsaved changes
+        public string ReturnTotal { get; set; }
 
         public WorkspaceForm(string segType, string segName, int segID, bool isNew = true)
         {
             InitializeComponent();
             segmentType = segType;
-            segmentType = "Wall";
+            segmentType = "Opening";
+            segmentName = "Front door";
 
             if (!isNew)
             {
@@ -31,6 +35,9 @@ namespace MaterialsApp
 
         private void WorkspaceForm_Load(object sender, EventArgs e)
         {
+            workspaceLabel.Text = "Workspace for " + segmentType + " segment: \"" + segmentName + "\"";
+            segmentTotalLabel.Text = "Grand total: " + grandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
+
             List<string> comboPop = new();
             SegmentItemEntry wsLoadSeg = new();
             switch (segmentType)
@@ -61,8 +68,8 @@ namespace MaterialsApp
             bool check = ValidateRowAdd();
             if (check)
             {
-                double unitCost = double.Parse(unitCostTextBox.Text);
-                double totalCost = unitCost * double.Parse(quantityTextBox.Text);
+                decimal unitCost = decimal.Parse(unitCostTextBox.Text);
+                decimal totalCost = unitCost * decimal.Parse(quantityTextBox.Text);
 
                 string[] row = new string[6] 
                 {
@@ -80,6 +87,9 @@ namespace MaterialsApp
                 sizeDescTextBox.Text = string.Empty;
                 quantityTextBox.Text = string.Empty;
                 unitCostTextBox.Text = string.Empty;
+
+                grandTotal += totalCost;
+                segmentTotalLabel.Text = "Grand total: " + grandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
                 isDirty = true;
             } else
             {
@@ -113,7 +123,7 @@ namespace MaterialsApp
             }
             else
             {
-                check = double.TryParse(unitCostTextBox.Text, out _);
+                check = decimal.TryParse(unitCostTextBox.Text, out _);
             }
 
             if (!check && textbox.Text != "")
@@ -167,32 +177,27 @@ namespace MaterialsApp
             List<string> temp = new();
             switch (itemComboBox.SelectedIndex)
             {
-                case 5:
+                case 5: // drywall
                     temp.Add("Drywall");
                     break;
-                case 6:
+                case 6: // foam board panel
                     temp.Add("Fiberglass foam");
                     break;
-                case 7:
+                case 7: // brick
                     temp.Add("Brick");
                     break;
-                case 8:
-                case 10:
+                case 8: // concrete block
+                case 10: // poured concrete
                     temp.Add("Concrete");
                     break;
             }
             return itemComboBox.SelectedIndex switch
             {
-                // stud
-                0 or 1 or 3 or 4 => wsWallIndex.GenericWoodMats,
-                // siding panel
-                2 => wsWallIndex.SidingPanelMats,
-                // drywall panel
+                0 or 1 or 3 or 4 => wsWallIndex.GenericWoodMats, // stud, stud block, clapboard siding, log siding
+                2 => wsWallIndex.SidingPanelMats, // siding panel
                 5 or 6 or 7 or 8 or 10 => temp,
-                // natural stone
-                9 => wsWallIndex.GenericStoneMats,
-                // insulation
-                11 => wsWallIndex.InsulationMats,
+                9 => wsWallIndex.GenericStoneMats, // natural stone
+                11 => wsWallIndex.InsulationMats, // insulation
                 _ => IndexIsCommonItem(),
             };
         }
@@ -307,6 +312,10 @@ namespace MaterialsApp
             result = MessageBox.Show(deleteMsg, "Delete?", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
+                string temp = workspaceDataGrid.Rows[f].Cells[5].Value.ToString();
+                temp = temp.Substring(1);
+                grandTotal -= decimal.Parse(temp);
+                segmentTotalLabel.Text = "Grand total: " + grandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
                 workspaceDataGrid.Rows.Remove(workspaceDataGrid.Rows[f]);
             }
         }
@@ -319,11 +328,14 @@ namespace MaterialsApp
                 result = MessageBox.Show("You have unsaved changes, are you sure you want to close the form?", "Unsaved changes", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
+                    this.DialogResult = DialogResult.Cancel;
                     this.Close();
                 }
             } else
             {
+                this.ReturnTotal = grandTotal.ToString();
                 this.Close();
+
             }
         }
     }

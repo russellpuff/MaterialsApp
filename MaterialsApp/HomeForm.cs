@@ -12,6 +12,8 @@ namespace MaterialsApp
 {
     public partial class HomeForm : Form
     {
+        string workspaceReturnTotal;
+
         public HomeForm()
         {
             InitializeComponent();
@@ -31,7 +33,7 @@ namespace MaterialsApp
             this.Enabled = false;
             if (ws.ShowDialog() == DialogResult.OK)
             {
-                // Add the item to the data grid. Else do nothing because the user cancelled. 
+                workspaceReturnTotal = ws.ReturnTotal; // This is the total cost of the workspace segment. Add this to the datagridview and calculate the grand total from all returns. 
             }
             this.Enabled = true;
 
