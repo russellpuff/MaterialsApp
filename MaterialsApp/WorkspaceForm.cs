@@ -19,8 +19,9 @@ namespace MaterialsApp
         decimal grandTotal = 0;
         bool isDirty = false; // unsaved changes
         public string ReturnTotal { get; set; }
+        DataTable wsTable;
 
-        public WorkspaceForm(string segType, string segName, int segID, bool isNew = true)
+        public WorkspaceForm(string segType, string segName, DataTable segDT, bool isNew = true)
         {
             InitializeComponent();
             segmentType = segType;
