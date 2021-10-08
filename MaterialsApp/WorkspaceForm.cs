@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +14,13 @@ namespace MaterialsApp
 {
     public partial class WorkspaceForm : Form
     {
+        string segmentType;
+
         public WorkspaceForm(string segType, string segName, int segID, bool isNew = true)
         {
             InitializeComponent();
-            Globals.segmentType = segType;
+            segmentType = segType;
+            segmentType = "Wall";
 
             if (!isNew)
             {
@@ -26,195 +30,424 @@ namespace MaterialsApp
 
         private void WorkspaceForm_Load(object sender, EventArgs e)
         {
-            var comboPop = new List<Enum>();
-            /*
-            The following dictionary related statement was suggested to me by the members of the unofficial C# discord.
-            I asked for a more graceful way of handling a switch statement that looked like shit and they gave me this.
-            This seems far too complicated for what I am hoping to achieve.
-            */
-            Dictionary<string, Type> mappings =
-                new()
-                {
-                    ["Wall"] = typeof(WallSegment.WallItem),
-                    ["Floor"] = typeof(FloorSegment.FloorItem),
-                    ["Opening"] = typeof(OpeningSegment.OpeningItem),
-                    ["Roof"] = typeof(RoofSegment.RoofItem)
-                };
-            if (mappings.TryGetValue(Globals.segmentType, out Type enumType))
+            List<string> comboPop = new();
+            SegmentItemEntry wsLoadSeg = new();
+            switch (segmentType)
             {
-                comboPop.AddRange(Enum.GetValues(enumType).Cast<Enum>());
+                case "Wall":
+                    WallSegment wsLoadWall = new();
+                    comboPop.AddRange(wsLoadWall.WallItem);
+                    break;
+                case "Roof":
+                    RoofSegment wsLoadRoof = new();
+                    comboPop.AddRange(wsLoadRoof.RoofItem);
+                    break;
+                case "Floor":
+                    FloorSegment wsLoadFloor = new();
+                    comboPop.AddRange(wsLoadFloor.FloorItem);
+                    break;
+                case "Opening":
+                    OpeningSegment wsLoadOpening = new();
+                    comboPop.AddRange(wsLoadOpening.OpeningItem);
+                    break;
             }
-            comboPop.AddRange(Enum.GetValues(typeof(SegmentItemEntry.CommonItems)).Cast<Enum>());
+            comboPop.AddRange(wsLoadSeg.CommonItems);
+            itemComboBox.DataSource = comboPop;
         }
 
         private void AddItemButton_Click(object sender, EventArgs e)
         {
+            bool check = ValidateRowAdd();
+            if (check)
+            {
+                double unitCost = double.Parse(unitCostTextBox.Text);
+                double totalCost = unitCost * double.Parse(quantityTextBox.Text);
+
+                string[] row = new string[6] 
+                {
+                itemComboBox.Text,
+                materialComboBox.Text,
+                sizeDescTextBox.Text,
+                quantityTextBox.Text,
+                unitCost.ToString("C", CultureInfo.GetCultureInfo("en-US")),
+                totalCost.ToString("C", CultureInfo.GetCultureInfo("en-US"))
+                };
+                workspaceDataGrid.Rows.Add(row);
+
+                itemComboBox.Text = string.Empty;
+                materialComboBox.Text = string.Empty;
+                sizeDescTextBox.Text = string.Empty;
+                quantityTextBox.Text = string.Empty;
+                unitCostTextBox.Text = string.Empty;
+            } else
+            {
+                System.Media.SystemSounds.Hand.Play();
+                MessageBox.Show("Error: All fields must be filled out before an item can be added.", "Incomplete entry", MessageBoxButtons.OK);
+            }
         }
-    }
-    public static class Globals
-    {
-        public static string segmentType;
+
+        private bool ValidateRowAdd()
+        {
+            bool validate1 = (itemComboBox.Text != string.Empty);
+            bool validate2 = (materialComboBox.Text != string.Empty);
+            bool validate3 = (sizeDescTextBox.Text != string.Empty);
+            bool validate4 = (quantityTextBox.Text != string.Empty);
+            bool validate5 = (unitCostTextBox.Text != string.Empty);
+            if (!validate3)
+            {
+                sizeDescTextBox.Text = " ";
+            }
+            return (validate1 && validate2 && validate4 && validate5);
+        }
+
+        private void QuantityOrUnitCostTextBox_TextChanged(object sender, EventArgs e)
+        {
+            var textbox = (TextBox)sender;
+            bool check;
+
+            if (textbox.Name == "quantityTextBox")
+            {
+                check = Int32.TryParse(quantityTextBox.Text, out _);
+            }
+            else
+            {
+                check = double.TryParse(unitCostTextBox.Text, out _);
+            }
+
+            if (!check && textbox.Text != "")
+            {
+                textbox.Text = textbox.Text.Remove(textbox.Text.Length - 1); // Extremely crude method of input validation because I can't figure out how to use maskedTextBox to do what I want.
+                System.Media.SystemSounds.Hand.Play();
+            }
+            else if (textbox.Name == "unitCostTextBox" && textbox.Text != "") // Stupid idiot's solution because le maskedtextbox doesn't work meme. 
+            {
+                decimal temp = decimal.Parse(unitCostTextBox.Text);
+                if (temp % 1 != 0 && (temp * 100) % 1 != 0)
+                {
+                    textbox.Text = textbox.Text.Remove(unitCostTextBox.Text.Length - 1);
+                    System.Media.SystemSounds.Hand.Play();
+                }
+            }
+        }
+
+        private void ItemComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            materialComboBox.DataSource = MatComboBoxWhatIndex();
+            materialComboBox.SelectedIndex = 0;
+        }
+
+        private void ItemComboBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!itemComboBox.Items.Contains(itemComboBox.Text)) // Should the user have a custom input for the item, material is blank.
+            {
+                materialComboBox.DataSource = null;
+                materialComboBox.Items.Clear();
+            }
+        }
+
+        private List<string> MatComboBoxWhatIndex()
+        {
+            return segmentType switch
+            {
+                "Wall" => SegmentIsWall(),
+                "Floor" => SegmentIsFloor(),
+                "Roof" => SegmentIsRoof(),
+                "Opening" => SegmentIsOpening(),
+                _ => IndexIsCommonItem(),
+            };
+        }
+
+        private List<string> SegmentIsWall()
+        {
+            WallSegment wsWallIndex = new();
+            materialComboBox.DataSource = null;
+            materialComboBox.Items.Clear();
+            List<string> temp = new();
+            switch (itemComboBox.SelectedIndex)
+            {
+                case 5:
+                    temp.Add("Drywall");
+                    break;
+                case 6:
+                    temp.Add("Fiberglass foam");
+                    break;
+                case 7:
+                    temp.Add("Brick");
+                    break;
+                case 8:
+                case 10:
+                    temp.Add("Concrete");
+                    break;
+            }
+            return itemComboBox.SelectedIndex switch
+            {
+                // stud
+                0 or 1 or 3 or 4 => wsWallIndex.GenericWoodMats,
+                // siding panel
+                2 => wsWallIndex.SidingPanelMats,
+                // drywall panel
+                5 or 6 or 7 or 8 or 10 => temp,
+                // natural stone
+                9 => wsWallIndex.GenericStoneMats,
+                // insulation
+                11 => wsWallIndex.InsulationMats,
+                _ => IndexIsCommonItem(),
+            };
+        }
+        private List<string> SegmentIsFloor()
+        {
+            FloorSegment wsFloorIndex = new();
+            materialComboBox.DataSource = null;
+            materialComboBox.Items.Clear();
+            List<string> temp = new() { "Vinyl" };
+
+            return itemComboBox.SelectedIndex switch
+            {
+                0 => wsFloorIndex.FoundationMats, // foundation
+                1 => wsFloorIndex.GenericWoodMats, // hardwood
+                2 => wsFloorIndex.GenericStoneMats, // stone
+                3 => wsFloorIndex.TileMats, // tile
+                4 => temp, // vinyl
+                _ => IndexIsCommonItem(),
+            };
+        }
+
+        private List<string> SegmentIsRoof()
+        {
+            RoofSegment wsRoofIndex = new();
+            materialComboBox.DataSource = null;
+            materialComboBox.Items.Clear();
+            List<string> temp = new();
+
+            switch (itemComboBox.SelectedIndex)
+            {
+                case 0: // clay roof tile
+                    temp.Add("Clay");
+                    break;
+                case 1: // slate roof tile
+                    temp.Add("Slate");
+                    break;
+                case 3: // asphalt shingle
+                    temp.Add("Asphalt");
+                    break;
+                case 5: // rafter
+                    temp.Add(wsRoofIndex.RafterMats);
+                    temp.AddRange(wsRoofIndex.GenericWoodMats);
+                    break;
+            }
+            return itemComboBox.SelectedIndex switch
+            {
+                0 or 1 or 3 or 5 => temp,
+                2 => wsRoofIndex.GenericWoodMats, // wood roof tile
+                4 => wsRoofIndex.MetalRoofMats, // metal roof
+                _ => IndexIsCommonItem(),
+            };
+        }
+        private List<string> SegmentIsOpening()
+        {
+            OpeningSegment wsOpeningIndex = new();
+            materialComboBox.DataSource = null;
+            materialComboBox.Items.Clear();
+            List<string> temp = new();
+
+            switch (itemComboBox.SelectedIndex)
+            {
+                case 0: // door
+                case 1: // door frame
+                case 5: // window frame
+                    temp.AddRange(wsOpeningIndex.OpeningMats);
+                    temp.AddRange(wsOpeningIndex.GenericWoodMats);
+                    break;
+                case 3: // weather strip
+                case 4: // window glass
+                    string agony = (itemComboBox.SelectedIndex == 3) ? "Vinyl" : "Glass";
+                    temp.Add(agony);
+                    break;
+            }
+            return itemComboBox.SelectedIndex switch
+            {
+                0 or 1 or 3 or 4 or 5 => temp,
+                2 => wsOpeningIndex.GenericWoodMats, // header
+                _ => IndexIsCommonItem(),
+            };
+        }
+        private List<string> IndexIsCommonItem()
+        {
+            List<string> temp = new();
+            switch (itemComboBox.SelectedItem)
+            {
+                case "Anchor bolt":
+                case "Rebar":
+                    temp.Add("Steel");
+                    break;
+                case "Nails":
+                case "Screws":
+                    temp.Add("Galvanized steel");
+                    break;
+                case "Caulk":
+                    temp.Add("Caulk");
+                    break;
+                case "Joint compound":
+                    temp.Add("Gypsum mud");
+                    break;
+                case "Paint":
+                    SegmentItemEntry pnt = new();
+                    return pnt.PaintMats;
+            }
+            return temp;
+        }
+
+        private void deleteItemButton_Click(object sender, EventArgs e)
+        {
+            int f = workspaceDataGrid.CurrentCell.RowIndex;
+            string deleteMsg = "Are you sure you want to delete this " + workspaceDataGrid.CurrentRow.Cells[0].Value.ToString() + " item?";
+            DialogResult result;
+            result = MessageBox.Show(deleteMsg, "Delete?", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                workspaceDataGrid.Rows.Remove(workspaceDataGrid.Rows[f]);
+            }
+        }
     }
     public class SegmentItemEntry
     {
-        public enum GenericWoodMaterials
+        public readonly List<string> GenericWoodMats = new()
         {
-            Redwood,
-            [Display(Name = "Red cedar")]
-            RedCedar,
-            Cedar,
-            Pine,
-            Fir,
-            Spruce,
-            Cypress,
-            Plywood
-        }
-        public enum GenericStoneMaterials
+            "Cedar",
+            "Cypress",
+            "Fir",
+            "Pine",
+            "Red cedar",
+            "Spruce",
+            "Plywood"
+        };
+        public readonly List<string> GenericStoneMats = new()
         {
-            Marble,
-            Granite,
-            Slate,
-            Sandstone,
-            Limestone,
-        }
-        public enum CommonItems
+            "Granite",
+            "Limestone",
+            "Marble",
+            "Sandstone",
+            "Slate"
+        };
+        public readonly List<string> CommonItems = new()
         {
-            Nails, // galvanized steel
-            Screws, // galvanized steel
-            Caulk, // caulk
-            [Display(Name = "Joint compound")]
-            JointCompound, // custom entry only
-            [Display(Name = "Anchor bolt")]
-            AnchorBolt, // steel
-            Rebar, // steel
-            Paint, // custom entry only
-        }
+            "Anchor bolt", // steel
+            "Caulk",
+            "Joint compound", // custom entry only
+            "Nails", // galvanized steel
+            "Paint", // custom entry only
+            "Rebar", // steel
+            "Screws" // galvanized steel
+        };
+        public readonly List<string> PaintMats = new()
+        {
+            "Oil-based",
+            "Chalkboard",
+            "Chalk",
+            "Enamel",
+            "Latex-Based",
+            "Water-Based",
+        };
     }
 
     public class WallSegment : SegmentItemEntry
     {
-        public enum WallItem
+        public readonly List<string> WallItem = new()
         {
-            Stud, // wood
-            [Display(Name = "Stud block")]
-            StudBlock, // wood
-            [Display(Name = "Siding panel")]
-            SidingPanel, // custom mats
-            [Display(Name = "Log siding")]
-            LogSiding, // wood
-            [Display(Name = "Clapboard siding")]
-            ClapboardSiding, // wood
-            [Display(Name = "Drywall panel")]
-            DrywallPanel,
-            [Display(Name = "Foam board panel")]
-            FoamBoardPanel,
-            [Display(Name = "Concrete block")]
-            ConcreteBlock,
-            [Display(Name = "Reinforced concrete")]
-            ReinforcedConcrete,
-            Brick,
-            [Display(Name = "Natural stone")]
-            NaturalStone, // wood
-            Insulation, // custom mats
-        }
-        public enum SidingPanelMats
+            "Stud", // wood
+            "Stud block", // wood
+            "Siding panel", // custom mats
+            "Clapboard siding", // wood
+            "Log siding", // wood
+            "Drywall panel",
+            "Foam board panel",
+            "Brick",
+            "Concrete block",
+            "Natural stone", // stone
+            "Reinforced concrete",
+            "Insulation" // custom mats
+        };
+        public readonly List<string> SidingPanelMats = new()
         {
-            Plasterboard,
-            Vinyl,
-            Aluminum,
-            Steel,
-            Plywood,
-        }
-        public enum InsulationMats
+            "Aluminum",
+            "Plasterboard",
+            "Plywood",
+            "Steel",
+            "Vinyl"
+        };
+        public readonly List<string> InsulationMats = new()
         {
-            Fiberglass,
-            Mineral,
-            Concrete,
-            [Display(Name = "Rigid foam")]
-            RigidFoam,
-            Cellulose,
-            [Display(Name = "Spray-in foam")]
-            SprayInFoam,
-
-        }
+            "Cellulose",
+            "Concrete",
+            "Fiberglass",
+            "Mineral",
+            "Rigid foam",
+            "Spray-in foam"
+        };
     }
 
     public class FloorSegment : SegmentItemEntry
     {
-        public enum FloorItem
+        public readonly List<string> FloorItem = new()
         {
-            Foundation, // custom mats
-            Stone, // stone
-            Hardwood, // wood
-            Vinyl,
-            Tile, // custom mats
-        }
-        public enum FoundationMats
+            "Foundation", // custom mats
+            "Hardwood", // wood
+            "Stone", // stone
+            "Tile", // custom mats
+            "Vinyl"
+        };
+        public readonly List<string> FoundationMats = new()
         {
-            Basement,
-            Crawlspace,
-            [Display(Name = "Concrete slab")]
-            ConcreteSlab,
-            Wood,
-            Beam,
-        }
-        public enum TileMats
+            "Basement",
+            "Beam",
+            "Concrete slab",
+            "Crawlspace",
+            "Wood"
+        };
+        public readonly List<string> TileMats = new()
         {
-            Ceramic,
-            Porcelain,
-            Marble,
-        }
+            "Ceramic",
+            "Marble",
+            "Porcelain"
+        };
     }
 
     public class RoofSegment : SegmentItemEntry
     {
-        public enum RoofItem
+        public readonly List<string> RoofItem = new()
         {
-            [Display(Name = "Clay roof tile")]
-            ClayRoofTile,
-            [Display(Name = "Slate roof tile")]
-            SlateRoofTile,
-            [Display(Name = "Wood roof tile")]
-            WoodRoofTile, // wood
-            [Display(Name = "Asphalt shingle")]
-            AsphaltShingle,
-            [Display(Name = "Metal roof")]
-            MetalRoof, // custom mats
-            Rafter, // custom mats
-        }
-        public enum MetalRoofMats
+            "Clay roof tile",
+            "Slate roof tile",
+            "Wood roof tile", // wood
+            "Asphalt shingle",
+            "Metal roof", // custom mats
+            "Rafter", // custom mats
+        };
+        public readonly List<string> MetalRoofMats = new()
         {
-            [Display(Name = "Galvanized steel")]
-            GalvanizedSteel,
-            Aluminum,
-            [Display(Name = "Copper and zinc")]
-            CopperAndZinc,
-        }
-        public enum RafterMats
-        {
-            Steel, // The generic wood list is attached to this.
-        }
+            "Aluminum",
+            "Copper and zinc",
+            "Galvanized steel"
+        };
+        public readonly string RafterMats = "Steel"; // The generic wood list is attached to this.
     }
 
     public class OpeningSegment : SegmentItemEntry
     {
-        public enum OpeningItem
+        public readonly List<string> OpeningItem = new()
         {
-            Door, // custom mats
-            [Display(Name = "Door frame")]
-            DoorFrame, // custom mats
-            Header, // wood
-            Weatherstrip, // vinyl
-            [Display(Name = "Window glass")]
-            WindowGlass, // glass
-            [Display(Name = "Window frame")]
-            WindowFrame, // custom mats
-        }
-        public enum OpeningCustomMats // Door, DoorFrame, and WindowFrame all use the same exact materials list, so I condensed them into one enum. 
-        {
-            Fiberglass,
-            Aluminum,
-            Vinyl, // The generic wood list is attached to this.
-        }
+            "Door", // custom mats
+            "Door frame", // custom mats
+            "Header", // wood
+            "Weather strip", // vinyl
+            "Window glass", // glass
+            "Window frame", // custom mats
+        };
+        public readonly List<string> OpeningMats = new()
+        { // Also, the generic wood list is attached to this in all cases. 
+            "Aluminum",
+            "Fiberglass",
+            "Vinyl",
+        };
     }
 }
