@@ -37,6 +37,7 @@ namespace MaterialsApp
             this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.editSegmentButton = new System.Windows.Forms.Button();
             this.deleteSegmentButton = new System.Windows.Forms.Button();
+            this.hlabelGrandTotal = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.hDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -112,11 +113,21 @@ namespace MaterialsApp
             this.deleteSegmentButton.Text = "Delete";
             this.deleteSegmentButton.UseVisualStyleBackColor = true;
             // 
+            // hlabelGrandTotal
+            // 
+            this.hlabelGrandTotal.AutoSize = true;
+            this.hlabelGrandTotal.Location = new System.Drawing.Point(125, 444);
+            this.hlabelGrandTotal.Name = "hlabelGrandTotal";
+            this.hlabelGrandTotal.Size = new System.Drawing.Size(67, 15);
+            this.hlabelGrandTotal.TabIndex = 10;
+            this.hlabelGrandTotal.Text = "Grand Total";
+            // 
             // HomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(330, 577);
+            this.Controls.Add(this.hlabelGrandTotal);
             this.Controls.Add(this.deleteSegmentButton);
             this.Controls.Add(this.editSegmentButton);
             this.Controls.Add(this.hDataGrid);
@@ -127,6 +138,7 @@ namespace MaterialsApp
             this.Text = "Materials Cost Estimator";
             ((System.ComponentModel.ISupportInitialize)(this.hDataGrid)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -139,6 +151,7 @@ namespace MaterialsApp
         private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
         private System.Windows.Forms.Button editSegmentButton;
         private System.Windows.Forms.Button deleteSegmentButton;
+        private System.Windows.Forms.Label hlabelGrandTotal;
     }
 }
 

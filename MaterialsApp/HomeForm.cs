@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,9 @@ namespace MaterialsApp
 {
     public partial class HomeForm : Form
     {
-        string workspaceReturnTotal;
-        string workspaceGrandTotal;
+        decimal workspaceReturnTotal;
+        decimal homeGrandTotal;
+        const string grandTotalHeader = "Grand Total";
         
 
         public HomeForm()
@@ -41,9 +43,14 @@ namespace MaterialsApp
                 if (ws.ShowDialog() == DialogResult.OK)
                 {
                     seg.SegTable = ws.WsTable;
-                    workspaceReturnTotal = ws.ReturnTotal; // This is the total cost of the workspace segment. Add this to the datagridview and calculate the grand total from all returns. 
-                    string[] row = new string[4] { seg.SegType, seg.SegName, workspaceReturnTotal, seg.SegId.ToString() };
+                    workspaceReturnTotal = Convert.ToDecimal(ws.ReturnTotal); // This is the total cost of the workspace segment. Add this to the datagridview and calculate the grand total from all returns. 
+                    string[] row = new string[4] { seg.SegType, seg.SegName, Convert.ToString(workspaceReturnTotal), seg.SegId.ToString() };
                     hDataGrid.Rows.Add(row);
+                    
+                    homeGrandTotal += workspaceReturnTotal;
+                    
+                    hlabelGrandTotal.Text = grandTotalHeader + "\n" + homeGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
+                    
                 }
                 this.Enabled = true;
             }
