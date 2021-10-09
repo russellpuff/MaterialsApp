@@ -15,14 +15,9 @@ namespace MaterialsApp
 {
     public partial class HomeForm : Form
     {
-        decimal workspaceReturnTotal;
-        decimal homeGrandTotal = 0;
-
         bool isDirty = false; // unsaved changes
         bool brandNew = true; // form has never been saved before
-
-        OpenFileDialog openFile;
-
+        decimal homeGrandTotal = 0;
         const string grandTotalHeader = "Grand Total";
 
         public HomeForm()
@@ -37,19 +32,22 @@ namespace MaterialsApp
             if (ws.ShowDialog() == DialogResult.OK)
             {
                 obj.SegTable = ws.WsTable;
-                workspaceReturnTotal = ws.ReturnTotal;
+                obj.SegCost = ws.ReturnTotal;
                 if (newWS)
                 {
                     Globals.segments.Add(obj);
-                    string[] row = new string[4] { obj.SegType, obj.SegName, workspaceReturnTotal.ToString("C", CultureInfo.GetCultureInfo("en-US")), obj.SegId.ToString() };
+                    string[] row = new string[4] { obj.SegType, obj.SegName, obj.SegCost.ToString("C", CultureInfo.GetCultureInfo("en-US")), obj.SegId.ToString() };
                     homeDataGrid.Rows.Add(row);
                 } else
                 {
                     int ind = IndexHunt(obj.SegId, false);
-                    decimal sub = (decimal)homeDataGrid.Rows[ind].Cells[2].Value;
+                    string dparse = homeDataGrid.Rows[ind].Cells[2].Value.ToString();
+                    dparse = dparse.Substring(1);
+                    decimal sub = decimal.Parse(dparse);
                     homeGrandTotal -= sub;
+                    homeDataGrid.Rows[ind].Cells[2].Value = obj.SegCost;
                 }
-                homeGrandTotal += workspaceReturnTotal;
+                homeGrandTotal += obj.SegCost;
                 homeGrandTotalLabel.Text = grandTotalHeader + "\n" + homeGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
             }
             isDirty = true;
@@ -74,7 +72,8 @@ namespace MaterialsApp
             {
                 foreach (DataGridViewRow r in homeDataGrid.Rows)
                 {
-                    if ((int)r.Cells[3].Value == id)
+                    string temperone = r.Cells[3].Value.ToString();
+                    if (Int32.Parse(temperone) == id)
                     {
                         return i;
                     }
@@ -106,7 +105,7 @@ namespace MaterialsApp
         private void EditSegmentButton_Click(object sender, EventArgs e)
         {
             int index = homeDataGrid.CurrentCell.RowIndex;
-            if (index != 1)
+            if (index != -1)
             {
                 string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
                 int tempID = Int32.Parse(temp);
@@ -148,20 +147,21 @@ namespace MaterialsApp
             {
                 saveToolStripMenuItem.Enabled = false;
                 saveAsToolStripMenuItem.Enabled = false;
+                viewReportToolStripMenuItem.Enabled = false;
             } else
             {
                 saveToolStripMenuItem.Enabled = true;
                 saveAsToolStripMenuItem.Enabled = true;
+                viewReportToolStripMenuItem.Enabled = true;
             }
         }
 
         private void MenuStripOpen_Click(object sender, EventArgs e)
         {
-            openFile = new OpenFileDialog()
+            OpenFileDialog openFile = new()
             {
-                FileName = "Select a project file",
                 Filter = "XML files (*xml)|*xml",
-                Title = "Open XML file"
+                Title = "Open"
             };
 
             if (openFile.ShowDialog() == DialogResult.OK)
@@ -180,8 +180,38 @@ namespace MaterialsApp
                         MenuStripSave_Click(null, null);
                         goto case DialogResult.No;
                     case DialogResult.No:
-                        Globals.filepath = openFile.FileName; // do stuff with the file once loaded
+                        Globals.filepath = openFile.FileName;
+                        bool saveOk;
+                        List<Segment> loadTest = new(Globals.segments);
+                        try
+                        {
+                            XmlSerializer cereal = new(loadTest.GetType());
+                            TextReader reader = new StreamReader(Globals.filepath);
+                            Globals.segments.Clear();
+                            Globals.segments = (List<Segment>)cereal.Deserialize(reader);
+                            reader.Close();
+                            saveOk = true;
+                            brandNew = false;
+                        } catch
+                        {
+                            MessageBox.Show("There was an error with the file you tried to open.", "Open file error", MessageBoxButtons.OK);
+                            Globals.segments = loadTest;
+                            saveOk = false;
+                        }
                         SaveEnable();
+
+                        if (saveOk)
+                        {
+                            homeDataGrid.Rows.Clear();
+                            homeGrandTotal = 0;
+                            foreach (Segment s in Globals.segments)
+                            {
+                                string[] row = new string[4] { s.SegType, s.SegName, s.SegCost.ToString("C", CultureInfo.GetCultureInfo("en-US")), s.SegId.ToString() };
+                                homeDataGrid.Rows.Add(row);
+                                homeGrandTotal += s.SegCost;
+                            }
+                            homeGrandTotalLabel.Text = grandTotalHeader + "\n" + homeGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
+                        }
                         break;
                 }
             }
@@ -207,7 +237,7 @@ namespace MaterialsApp
         {
             SaveFileDialog saveFile = new();
             saveFile.Filter = "XML File|*.xml";
-            saveFile.Title = "Save Project File";
+            saveFile.Title = "Save As";
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 Globals.filepath = saveFile.FileName;
@@ -221,9 +251,12 @@ namespace MaterialsApp
             }
         }
 
-        private void MenuStripBuildReport_Click(object sender, EventArgs e)
+        private void MenuStripViewReport_Click(object sender, EventArgs e)
         {
-
+            SummaryForm sf = new(homeGrandTotal);
+            this.Enabled = false;
+            sf.ShowDialog();
+            this.Enabled = true;
         }
 
         private void MenuStripAbout_Click(object sender, EventArgs e)
@@ -240,12 +273,104 @@ namespace MaterialsApp
         {
             SaveEnable();
         }
+
+        private void MenuStripNew_Click(object sender, EventArgs e) // It doesn't like it if I add a third variable to the Click event. 
+        {
+            MenuStripNewWorkaround();
+        }
+
+        private void MenuStripNewWorkaround(int newType = 0) // 0 is the first time it's fired, 1 means it's either saved or ignored, 2 means cancelled
+        {
+            switch (newType)
+            {
+                case 0:
+                    int z = 1;
+                    HomeForm_FormClosing(z, null);
+                    break;
+                case 1:
+                    Application.Restart();
+                    break;
+            }
+        }
+
+        private void HomeForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isDirty)
+            {
+                DialogResult result;
+                if (isDirty)
+                {
+                    result = MessageBox.Show("You currently have unsaved changes. Save your changes?", "Unsaved changes", MessageBoxButtons.YesNoCancel);
+                }
+                else
+                {
+                    result = DialogResult.No;
+                }
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        MenuStripSave_Click(null, null);
+                        break;
+                    case DialogResult.Cancel:
+                        if ((int)sender != 1)
+                        {
+                            e.Cancel = true;
+                        }
+                        break;
+                }
+                try
+                {
+                    if ((result == DialogResult.Yes || result == DialogResult.No) && (int)sender == 1) // Big stupid idiot solution to a problem with Application.Restart() when the user decides to cancel creating a new project. 
+                    {
+                        isDirty = false;
+                        MenuStripNewWorkaround(1);
+                    }
+                    else if (result == DialogResult.Cancel && (int)sender == 1)
+                    {
+                        MenuStripNewWorkaround(2);
+                    }
+                } catch { } // Doesn't allow me to tryparse to avoid an exception, so instead I'll do a trycatch without a catch. 
+            }
+        }
+
+        private void HomeDataGrid_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            string headerText = homeDataGrid.Columns[e.ColumnIndex].HeaderText;
+            if (!headerText.Equals("Name")) return; // Aborts if for some reason the cell being edited isn't in the right column. 
+
+            int index = homeDataGrid.CurrentCell.RowIndex;
+            string oldName = homeDataGrid.Rows[index].Cells[1].Value.ToString();
+
+            if (string.IsNullOrEmpty(e.FormattedValue.ToString()))
+            {
+                MessageBox.Show("Name cannot be empty.", "Rename error", MessageBoxButtons.OK);
+                e.Cancel = true;
+            } else if (e.FormattedValue.ToString() != oldName)
+            {
+                DialogResult result;
+                string msg = "Are you sure you want to rename " + oldName + " to " + e.FormattedValue.ToString() + "?";
+                result = MessageBox.Show(msg, "Rename confirmation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
+                    int ind = Int32.Parse(temp);
+                    ind = IndexHunt(ind, true);
+                    Globals.segments[ind].SegName = e.FormattedValue.ToString();
+                }
+                else
+                {
+                    e.Cancel = true;
+                    homeDataGrid.CancelEdit();
+                }
+            }
+        }
     }
     public class Segment
     {
         public string SegType { get; set; }
         public string SegName { get; set; }
         public int SegId { get; set; }
+        public decimal SegCost { get; set; }
         public DataTable SegTable { get; set; }
     }
 

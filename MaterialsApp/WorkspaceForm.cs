@@ -349,6 +349,7 @@ namespace MaterialsApp
                 grandTotal -= decimal.Parse(temp);
                 segmentTotalLabel.Text = "Grand total: " + grandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
                 workspaceDataGrid.Rows.Remove(workspaceDataGrid.Rows[f]);
+                isDirty = true;
             }
         }
 
@@ -388,6 +389,7 @@ namespace MaterialsApp
         private void DataTableBuilder()
         {
             WsTable.Clear();
+            workspaceDataGrid.Sort(workspaceDataGrid.Columns[0], ListSortDirection.Ascending);
             foreach (DataGridViewRow row in workspaceDataGrid.Rows)
             {
                 DataRow dr = WsTable.NewRow();
