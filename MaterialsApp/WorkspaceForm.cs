@@ -20,7 +20,7 @@ namespace MaterialsApp
         bool isDirty = false; // unsaved changes
         bool newS = true;
         public decimal ReturnTotal { get; set; }
-        public DataTable WsTable { get; set; }
+        public DataTable WsTable { get; }
 
         public WorkspaceForm(string segType, string segName, DataTable segDT, bool isNew = true)
         {
@@ -33,18 +33,18 @@ namespace MaterialsApp
 
         private void WorkspaceForm_Load(object sender, EventArgs e)
         {
+            if (newS)
+            {
+                for (int i = 0; i < workspaceDataGrid.Columns.Count; i++) // Gives the blank datatable correct headers.
+                {
+                    WsTable.Columns.Add(workspaceDataGrid.Columns[i].HeaderText);
+                }
+            } else
+            {
+                ExistingTableLoader();
+            }
             workspaceLabel.Text = "Workspace for " + segmentType + " segment: \"" + segmentName + "\"";
             segmentTotalLabel.Text = "Grand total: " + grandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
-
-            for (int i = 0; i < workspaceDataGrid.Columns.Count; i++) // Initializes the datatable with the correct headers, regardless of new or load.
-            {
-                WsTable.Columns.Add(workspaceDataGrid.Columns[i].HeaderText);
-            }
-
-            if (!newS) // Attaches existing datatable to datagridview if the user is loading an existing segment. 
-            {
-                workspaceDataGrid.DataSource = WsTable;
-            }
 
             List<string> comboPop = new();
             SegmentItemEntry wsLoadSeg = new();
@@ -69,6 +69,27 @@ namespace MaterialsApp
             }
             comboPop.AddRange(wsLoadSeg.CommonItems);
             itemComboBox.DataSource = comboPop;
+        }
+
+        private void ExistingTableLoader()
+        {
+            for (int i = 0; i < WsTable.Rows.Count; ++i)
+            {
+                string[] row = new string[6];
+                for (int k = 0; k < 6; ++k)
+                {
+                    row[k] = WsTable.Rows[i][k].ToString();
+                    if (k == 5)
+                    {
+                        string temp = row[k];
+                        temp = temp.Substring(1);
+                        decimal add = decimal.Parse(temp);
+                        grandTotal += add;
+                    }
+                }
+                workspaceDataGrid.Rows.Add(row);
+            }
+
         }
 
         private void AddItemButton_Click(object sender, EventArgs e)
@@ -376,6 +397,15 @@ namespace MaterialsApp
                 }
                 WsTable.Rows.Add(dr);
             }
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            itemComboBox.Text = string.Empty;
+            materialComboBox.Text = string.Empty;
+            sizeDescTextBox.Text = string.Empty;
+            quantityTextBox.Text = string.Empty;
+            unitCostTextBox.Text = string.Empty;
         }
     }
 

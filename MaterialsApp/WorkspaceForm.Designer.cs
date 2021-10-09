@@ -46,6 +46,7 @@ namespace MaterialsApp
             this.materialComboBox = new System.Windows.Forms.ComboBox();
             this.sizeDescTextBox = new System.Windows.Forms.TextBox();
             this.quantityTextBox = new System.Windows.Forms.TextBox();
+            this.clearButton = new System.Windows.Forms.Button();
             this.workspaceLabel = new System.Windows.Forms.Label();
             this.workspaceBottomTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.segmentTotalLabel = new System.Windows.Forms.Label();
@@ -180,6 +181,7 @@ namespace MaterialsApp
             this.workspaceTableLayout.Controls.Add(this.materialComboBox, 1, 0);
             this.workspaceTableLayout.Controls.Add(this.sizeDescTextBox, 2, 0);
             this.workspaceTableLayout.Controls.Add(this.quantityTextBox, 3, 0);
+            this.workspaceTableLayout.Controls.Add(this.clearButton, 5, 0);
             this.workspaceTableLayout.Location = new System.Drawing.Point(12, 12);
             this.workspaceTableLayout.Name = "workspaceTableLayout";
             this.workspaceTableLayout.RowCount = 3;
@@ -241,6 +243,17 @@ namespace MaterialsApp
             this.quantityTextBox.TabIndex = 12;
             this.quantityTextBox.TextChanged += new System.EventHandler(this.QuantityOrUnitCostTextBox_TextChanged);
             // 
+            // clearButton
+            // 
+            this.clearButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.clearButton.Location = new System.Drawing.Point(1060, 4);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(75, 23);
+            this.clearButton.TabIndex = 14;
+            this.clearButton.Text = "Clear";
+            this.clearButton.UseVisualStyleBackColor = true;
+            this.clearButton.Click += new System.EventHandler(this.ClearButton_Click);
+            // 
             // workspaceLabel
             // 
             this.workspaceLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -288,6 +301,7 @@ namespace MaterialsApp
             // 
             // WorkspaceForm
             // 
+            this.AcceptButton = this.addItemButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1175, 516);
@@ -329,5 +343,6 @@ namespace MaterialsApp
         private System.Windows.Forms.Label workspaceLabel;
         private System.Windows.Forms.TableLayoutPanel workspaceBottomTableLayout;
         private System.Windows.Forms.Label segmentTotalLabel;
+        private System.Windows.Forms.Button clearButton;
     }
 }
