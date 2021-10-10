@@ -22,7 +22,7 @@ namespace MaterialsApp
         private void AboutLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             aboutLinkLabel.LinkVisited = true;
-            string target = "https://google.com";
+            string target = "https://pastebin.com/uBFfhL2B";
             OpenBrowser(target);
         }
 
