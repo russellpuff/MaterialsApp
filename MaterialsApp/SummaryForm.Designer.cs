@@ -29,6 +29,7 @@ namespace MaterialsApp
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SummaryForm));
             this.summaryDataGrid = new System.Windows.Forms.DataGridView();
             this.sInfoColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sItemNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -168,7 +169,9 @@ namespace MaterialsApp
             this.Controls.Add(this.exportTSVButton);
             this.Controls.Add(this.summaryDataGrid);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SummaryForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Summary";
             this.Load += new System.EventHandler(this.SummaryForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.summaryDataGrid)).EndInit();

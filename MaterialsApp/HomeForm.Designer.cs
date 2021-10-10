@@ -29,6 +29,7 @@ namespace MaterialsApp
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeForm));
             this.newSegmentButton = new System.Windows.Forms.Button();
             this.homeDataGrid = new System.Windows.Forms.DataGridView();
             this.typeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -192,35 +193,35 @@ namespace MaterialsApp
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.MenuStripNew_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.openToolStripMenuItem.Text = "Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.MenuStripOpen_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.MenuStripSave_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.MenuStripSaveAs_Click);
             // 
             // viewReportToolStripMenuItem
             // 
             this.viewReportToolStripMenuItem.Name = "viewReportToolStripMenuItem";
-            this.viewReportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.viewReportToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.viewReportToolStripMenuItem.Text = "View Report";
             this.viewReportToolStripMenuItem.Click += new System.EventHandler(this.MenuStripViewReport_Click);
             // 
@@ -257,11 +258,12 @@ namespace MaterialsApp
             this.Controls.Add(this.homeDataGrid);
             this.Controls.Add(this.homeMenuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.homeMenuStrip;
             this.MaximizeBox = false;
             this.Name = "HomeForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Materials Cost Estimator";
+            this.Text = "Materials List Estimator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HomeForm_FormClosing);
             this.Load += new System.EventHandler(this.HomeForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.homeDataGrid)).EndInit();

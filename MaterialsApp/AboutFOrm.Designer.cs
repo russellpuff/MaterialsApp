@@ -75,7 +75,7 @@ namespace MaterialsApp
             this.Controls.Add(this.aboutLinkLabel);
             this.Controls.Add(this.aboutBodyLabel);
             this.Controls.Add(this.aboutHeaderLabel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutForm";

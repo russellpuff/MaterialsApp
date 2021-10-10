@@ -51,11 +51,6 @@ namespace MaterialsApp
             sGrandTotalLabel.Text = "Grand total: " + sfGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
         }
 
-        private void SummaryDataGrid_SelectionChanged(object sender, EventArgs e)
-        {
-            summaryDataGrid.ClearSelection();
-        }
-
         private void ExportCSVButton_Click(object sender, EventArgs e)
         {
             var ordered = Globals.segments.OrderBy(Segment => Segment.SegType);
@@ -106,6 +101,10 @@ namespace MaterialsApp
                 writer.Close();
                 MessageBox.Show("Successfully exported to .tsv\nThis file can be opened in a spreadsheet editor such as Excel for formatting, if promtpted to select delimiter type, the type is Tab.", "Export successful", MessageBoxButtons.OK);
             } 
+        }
+        private void SummaryDataGrid_SelectionChanged(object sender, EventArgs e) // Asshole's method of making the grid unselectable. 
+        {
+            summaryDataGrid.ClearSelection();
         }
     }
 }

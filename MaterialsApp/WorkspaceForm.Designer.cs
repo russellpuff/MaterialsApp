@@ -29,6 +29,7 @@ namespace MaterialsApp
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkspaceForm));
             this.addItemButton = new System.Windows.Forms.Button();
             this.cancelWorkspaceButton = new System.Windows.Forms.Button();
             this.saveWorkspaceButton = new System.Windows.Forms.Button();
@@ -307,7 +308,8 @@ namespace MaterialsApp
             this.ClientSize = new System.Drawing.Size(1175, 516);
             this.Controls.Add(this.workspaceBottomTableLayout);
             this.Controls.Add(this.workspaceTableLayout);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "WorkspaceForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -14,11 +14,11 @@ namespace MaterialsApp
 {
     public partial class WorkspaceForm : Form
     {
-        string segmentType;
-        string segmentName;
+        readonly string segmentType;
+        readonly string segmentName;
         decimal grandTotal = 0;
         bool isDirty = false; // unsaved changes
-        bool newS = true;
+        readonly bool newS = true;
         public decimal ReturnTotal { get; set; }
         public DataTable WsTable { get; }
 
@@ -30,7 +30,9 @@ namespace MaterialsApp
             WsTable = segDT;
             newS = isNew;
         }
-
+        //
+        // Workspace initialization.
+        //
         private void WorkspaceForm_Load(object sender, EventArgs e)
         {
             if (newS)
@@ -45,7 +47,10 @@ namespace MaterialsApp
             }
             workspaceLabel.Text = "Workspace for " + segmentType + " segment: \"" + segmentName + "\"";
             segmentTotalLabel.Text = "Grand total: " + grandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
-
+            //
+            // comboPop is a list used to populate the combobox depending on what the segment's type is.
+            // Regardless of the type, common items are always added. If a custom type is defined, only common items will appear.
+            //
             List<string> comboPop = new();
             SegmentItemEntry wsLoadSeg = new();
             switch (segmentType)
@@ -91,86 +96,9 @@ namespace MaterialsApp
             }
 
         }
-
-        private void AddItemButton_Click(object sender, EventArgs e)
-        {
-            bool check = ValidateRowAdd();
-            if (check)
-            {
-                decimal unitCost = decimal.Parse(unitCostTextBox.Text);
-                decimal totalCost = unitCost * decimal.Parse(quantityTextBox.Text);
-
-                string[] row = new string[6] 
-                {
-                itemComboBox.Text,
-                materialComboBox.Text,
-                sizeDescTextBox.Text,
-                quantityTextBox.Text,
-                unitCost.ToString("C", CultureInfo.GetCultureInfo("en-US")),
-                totalCost.ToString("C", CultureInfo.GetCultureInfo("en-US"))
-                };
-                workspaceDataGrid.Rows.Add(row);
-
-                itemComboBox.Text = string.Empty;
-                materialComboBox.Text = string.Empty;
-                sizeDescTextBox.Text = string.Empty;
-                quantityTextBox.Text = string.Empty;
-                unitCostTextBox.Text = string.Empty;
-
-                grandTotal += totalCost;
-                segmentTotalLabel.Text = "Grand total: " + grandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
-                isDirty = true;
-            } else
-            {
-                System.Media.SystemSounds.Hand.Play();
-                MessageBox.Show("Error: All fields must be filled out before an item can be added.", "Incomplete entry", MessageBoxButtons.OK);
-            }
-        }
-
-        private bool ValidateRowAdd()
-        {
-            bool validate1 = (itemComboBox.Text != string.Empty);
-            bool validate2 = (materialComboBox.Text != string.Empty);
-            bool validate3 = (sizeDescTextBox.Text != string.Empty);
-            bool validate4 = (quantityTextBox.Text != string.Empty);
-            bool validate5 = (unitCostTextBox.Text != string.Empty);
-            if (!validate3)
-            {
-                sizeDescTextBox.Text = " ";
-            }
-            return (validate1 && validate2 && validate4 && validate5);
-        }
-
-        private void QuantityOrUnitCostTextBox_TextChanged(object sender, EventArgs e)
-        {
-            var textbox = (TextBox)sender;
-            bool check;
-
-            if (textbox.Name == "quantityTextBox")
-            {
-                check = Int32.TryParse(quantityTextBox.Text, out _);
-            }
-            else
-            {
-                check = decimal.TryParse(unitCostTextBox.Text, out _);
-            }
-
-            if (!check && textbox.Text != "")
-            {
-                textbox.Text = textbox.Text.Remove(textbox.Text.Length - 1); // Extremely crude method of input validation because I can't figure out how to use maskedTextBox to do what I want.
-                System.Media.SystemSounds.Hand.Play();
-            }
-            else if (textbox.Name == "unitCostTextBox" && textbox.Text != "") // Stupid idiot's solution because le maskedtextbox doesn't work meme. 
-            {
-                decimal temp = decimal.Parse(unitCostTextBox.Text);
-                if (temp % 1 != 0 && (temp * 100) % 1 != 0)
-                {
-                    textbox.Text = textbox.Text.Remove(unitCostTextBox.Text.Length - 1);
-                    System.Media.SystemSounds.Hand.Play();
-                }
-            }
-        }
-
+        //
+        // The long and arduous process of populating the material combobox.
+        //
         private void ItemComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             materialComboBox.DataSource = MatComboBoxWhatIndex();
@@ -186,7 +114,7 @@ namespace MaterialsApp
             }
         }
 
-        private List<string> MatComboBoxWhatIndex()
+        private List<string> MatComboBoxWhatIndex() // Step 1, figure out what type the segment is and go down that path. 
         {
             return segmentType switch
             {
@@ -310,7 +238,7 @@ namespace MaterialsApp
             };
         }
 
-        private List<string> IndexIsCommonItem()
+        private List<string> IndexIsCommonItem() // Should the selected item be a common item, it'll instead populate the combobox witha custom list of materials based on the common item.
         {
             List<string> temp = new();
             switch (itemComboBox.SelectedItem)
@@ -330,12 +258,123 @@ namespace MaterialsApp
                     temp.Add("Gypsum mud");
                     break;
                 case "Paint":
-                    List<string> pnt = new() { "Chalk", "Chalkboard", "Enamel", "Latex-Based", "Oil-based", "Water-Based" };
+                    List<string> pnt = new() { "Chalk", "Chalkboard", "Enamel", "Latex-Based", "Oil-based", "Water-Based" }; // The paint list literally only appears in this specific case, so there's no reason to add it to the class. 
                     return pnt;
             }
             return temp;
         }
+        //
+        // Adding an item.
+        //
+        private void AddItemButton_Click(object sender, EventArgs e)
+        {
+            bool check = ValidateRowAdd();
+            if (check)
+            {
+                decimal unitCost = decimal.Parse(unitCostTextBox.Text);
+                decimal totalCost = unitCost * decimal.Parse(quantityTextBox.Text);
 
+                string[] row = new string[6] 
+                {
+                itemComboBox.Text,
+                materialComboBox.Text,
+                sizeDescTextBox.Text,
+                quantityTextBox.Text,
+                unitCost.ToString("C", CultureInfo.GetCultureInfo("en-US")),
+                totalCost.ToString("C", CultureInfo.GetCultureInfo("en-US"))
+                };
+                workspaceDataGrid.Rows.Add(row);
+                ClearButton_Click(null, null); // Clears the rows after they've been committed. 
+                
+                grandTotal += totalCost;
+                segmentTotalLabel.Text = "Grand total: " + grandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
+                isDirty = true;
+            } else
+            {
+                System.Media.SystemSounds.Hand.Play();
+                MessageBox.Show("Error: All fields must be filled out before an item can be added.", "Incomplete entry", MessageBoxButtons.OK);
+            }
+        }
+
+        private bool ValidateRowAdd()
+        {
+            bool validate1 = (itemComboBox.Text != string.Empty);
+            bool validate2 = (materialComboBox.Text != string.Empty);
+            bool validate3 = (sizeDescTextBox.Text != string.Empty);
+            bool validate4 = (quantityTextBox.Text != string.Empty);
+            bool validate5 = (unitCostTextBox.Text != string.Empty);
+            if (!validate3)
+            {
+                sizeDescTextBox.Text = " ";
+            }
+            return (validate1 && validate2 && validate4 && validate5);
+        }
+
+        private void QuantityOrUnitCostTextBox_TextChanged(object sender, EventArgs e) // Not strictly speaking related to adding an item, but this event validates the quanity and unit cost text boxes before they can even be committed.
+        {
+            var textbox = (TextBox)sender;
+            bool check;
+
+            if (textbox.Name == "quantityTextBox")
+            {
+                check = Int32.TryParse(quantityTextBox.Text, out _);
+            }
+            else
+            {
+                check = decimal.TryParse(unitCostTextBox.Text, out _);
+            }
+
+            if (!check && textbox.Text != "")
+            {
+                textbox.Text = textbox.Text.Remove(textbox.Text.Length - 1); // Extremely crude method of input validation because I can't figure out how to use maskedTextBox to do what I want.
+                System.Media.SystemSounds.Hand.Play();
+            }
+            else if (textbox.Name == "unitCostTextBox" && textbox.Text != "") // Stupid idiot's solution because le maskedtextbox doesn't work meme. 
+            {
+                decimal temp = decimal.Parse(unitCostTextBox.Text);
+                if (temp % 1 != 0 && (temp * 100) % 1 != 0)
+                {
+                    textbox.Text = textbox.Text.Remove(unitCostTextBox.Text.Length - 1);
+                    System.Media.SystemSounds.Hand.Play();
+                }
+            }
+        }
+        //
+        // Saving your work.
+        //
+        private void SaveWorkspaceButton_Click(object sender, EventArgs e)
+        {
+            if (isDirty)
+            {
+                DataTableBuilder();
+                isDirty = false;
+                DialogResult result = MessageBox.Show("Changes saved. Do you want to continue working?", "Changes saved", MessageBoxButtons.YesNo);
+                if (result == DialogResult.No)
+                {
+                    this.ReturnTotal = grandTotal;
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+            }
+        }
+
+        private void DataTableBuilder()
+        {
+            WsTable.Clear();
+            workspaceDataGrid.Sort(workspaceDataGrid.Columns[0], ListSortDirection.Ascending);
+            foreach (DataGridViewRow row in workspaceDataGrid.Rows)
+            {
+                DataRow dr = WsTable.NewRow();
+                for (int k = 0; k < workspaceDataGrid.Columns.Count; k++)
+                {
+                    dr[workspaceDataGrid.Columns[k].HeaderText] = row.Cells[k].Value;
+                }
+                WsTable.Rows.Add(dr);
+            }
+        }
+        //
+        // "The reset of the functions".
+        //
         private void DeleteItemButton_Click(object sender, EventArgs e)
         {
             int f = workspaceDataGrid.CurrentCell.RowIndex;
@@ -370,37 +409,6 @@ namespace MaterialsApp
             }
         }
 
-        private void SaveWorkspaceButton_Click(object sender, EventArgs e)
-        {
-            if (isDirty)
-            {
-                DataTableBuilder();
-                isDirty = false;
-                DialogResult result = MessageBox.Show("Changes saved. Do you want to continue working?", "Changes saved", MessageBoxButtons.YesNo);
-                if (result == DialogResult.No)
-                {
-                    this.ReturnTotal = grandTotal;
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
-            }
-        }
-
-        private void DataTableBuilder()
-        {
-            WsTable.Clear();
-            workspaceDataGrid.Sort(workspaceDataGrid.Columns[0], ListSortDirection.Ascending);
-            foreach (DataGridViewRow row in workspaceDataGrid.Rows)
-            {
-                DataRow dr = WsTable.NewRow();
-                for (int k = 0; k < workspaceDataGrid.Columns.Count; k++)
-                {
-                    dr[workspaceDataGrid.Columns[k].HeaderText] = row.Cells[k].Value;
-                }
-                WsTable.Rows.Add(dr);
-            }
-        }
-
         private void ClearButton_Click(object sender, EventArgs e)
         {
             itemComboBox.Text = string.Empty;
@@ -426,7 +434,9 @@ namespace MaterialsApp
             }
         }
     }
-
+    //
+    // Classes for combobox population.
+    //
     public class SegmentItemEntry
     {
         public readonly List<string> GenericWoodMats = new()

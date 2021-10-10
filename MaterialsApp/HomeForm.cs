@@ -25,6 +25,88 @@ namespace MaterialsApp
             InitializeComponent();
         }
 
+        private void HomeForm_Load(object sender, EventArgs e)
+        {
+            ControlEnable();
+        }
+        //
+        // Home Buttons and their related functionality.
+        //
+        private void NewSegmentButton_Click(object sender, EventArgs e)
+        {
+            NewSegmentForm nsf = new();
+            if (nsf.ShowDialog() == DialogResult.OK)
+            {
+                Segment seg = new();
+                seg.SegType = nsf.SegTypeDefined;
+                seg.SegName = nsf.SegNameDefined;
+
+                Random rand = new();
+                bool pass = false;
+                int idTest = 0;
+                while (!pass) // In the slim chance the ID is in use, generates a new one. 
+                {
+                    idTest = rand.Next(1, 65535);
+                    if (!Globals.segments.Any()) // Dodges an infinite loop caused when creating the first segment in any given project.
+                    {
+                        pass = true;
+                    }
+                    foreach (Segment s in Globals.segments)
+                    {
+                        pass = true;
+                        if (s.SegId == idTest)
+                        {
+                            pass = false;
+                        } 
+                    }
+                }
+                seg.SegId = idTest;
+
+                seg.SegTable = new DataTable
+                {
+                    TableName = "SegTable" // Cereal machine yells at me if these are unnamed. 
+                };
+                WorkspaceFormOpener(seg);
+            }
+            ControlEnable();
+        }
+
+        private void EditSegmentButton_Click(object sender, EventArgs e)
+        {
+
+            int index = homeDataGrid.CurrentCell.RowIndex;
+            string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
+            int tempID = Int32.Parse(temp);
+            int target = IndexHunt(tempID, true);
+            WorkspaceFormOpener(Globals.segments[target], false);
+        }
+
+        private void DeleteSegmentButton_Click(object sender, EventArgs e)
+        {
+            int index = homeDataGrid.CurrentCell.RowIndex;
+            string tempType = homeDataGrid.Rows[index].Cells[0].Value.ToString();
+            string tempName = homeDataGrid.Rows[index].Cells[1].Value.ToString();
+            string tempMessage = "Are you sure you want to delete this " + tempType + " segment: \"" + tempName + "\"?";
+            DialogResult result;
+            result = MessageBox.Show(tempMessage, "Delete segment?", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
+                int tempID = Int32.Parse(temp);
+                int target = IndexHunt(tempID, true);
+
+                temp = homeDataGrid.Rows[index].Cells[2].Value.ToString();
+                temp = temp.Substring(1);
+                decimal tempCost = decimal.Parse(temp);
+                homeGrandTotal -= tempCost;
+                homeGrandTotalLabel.Text = grandTotalHeader + "\n" + homeGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
+
+                Globals.segments.RemoveAt(target);
+                homeDataGrid.Rows.RemoveAt(index);
+                ControlEnable();
+            }
+        }
+
         private void WorkspaceFormOpener(Segment obj, bool newWS = true)
         {
             WorkspaceForm ws = new(obj.SegType, obj.SegName, obj.SegTable, newWS);
@@ -80,71 +162,12 @@ namespace MaterialsApp
                     ++i;
                 }
             }
-            return -1; // Theoretically impossible, but required to avoid IDE bitching.
+            return -1; // Debug value.
         }
-
-        private void NewSegmentButton_Click(object sender, EventArgs e)
-        {
-            NewSegmentForm nsf = new();
-            if (nsf.ShowDialog() == DialogResult.OK)
-            {
-                Segment seg = new();
-                seg.SegType = nsf.SegTypeDefined;
-                seg.SegName = nsf.SegNameDefined;
-                Random rand = new();
-                seg.SegId = rand.Next(1, 65535);
-                seg.SegTable = new DataTable
-                {
-                    TableName = "SegTable" // Cereal machine yells at me if these are unnamed. 
-                };
-                WorkspaceFormOpener(seg);
-            }
-            SaveEnable();
-        }
-
-        private void EditSegmentButton_Click(object sender, EventArgs e)
-        {
-            
-            if (homeDataGrid.Rows.Count != 0)
-            {
-                int index = homeDataGrid.CurrentCell.RowIndex;
-                string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
-                int tempID = Int32.Parse(temp);
-                int target = IndexHunt(tempID, true);
-                WorkspaceFormOpener(Globals.segments[target], false);
-            }
-        }
-
-        private void DeleteSegmentButton_Click(object sender, EventArgs e)
-        {
-            if (homeDataGrid.Rows.Count != 0)
-            {
-                int index = homeDataGrid.CurrentCell.RowIndex;
-                string tempType = homeDataGrid.Rows[index].Cells[0].Value.ToString();
-                string tempName = homeDataGrid.Rows[index].Cells[1].Value.ToString();
-                string tempMessage = "Are you sure you want to delete this " + tempType + " segment: \"" + tempName + "\"?";
-                DialogResult result;
-                result = MessageBox.Show(tempMessage, "Delete segment?", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
-                    int tempID = Int32.Parse(temp);
-                    int target = IndexHunt(tempID, true);
-
-                    temp = homeDataGrid.Rows[index].Cells[2].Value.ToString();
-                    temp = temp.Substring(1);
-                    decimal tempCost = decimal.Parse(temp);
-                    homeGrandTotal -= tempCost;
-                    homeGrandTotalLabel.Text = grandTotalHeader + "\n" + homeGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
-
-                    Globals.segments.RemoveAt(target);
-                    homeDataGrid.Rows.RemoveAt(index);
-                    SaveEnable();
-                }
-            }
-        }
-
-        private void SaveEnable()
+        //
+        // UI and table stuff. 
+        //
+        private void ControlEnable() // Enables or disables a myriad of controls based on whether the user has any segments. Avoids headaches. 
         {
             bool isEmpty = !Globals.segments.Any();
             if (isEmpty)
@@ -152,14 +175,52 @@ namespace MaterialsApp
                 saveToolStripMenuItem.Enabled = false;
                 saveAsToolStripMenuItem.Enabled = false;
                 viewReportToolStripMenuItem.Enabled = false;
+                editSegmentButton.Enabled = false;
+                deleteSegmentButton.Enabled = false;
             } else
             {
                 saveToolStripMenuItem.Enabled = true;
                 saveAsToolStripMenuItem.Enabled = true;
                 viewReportToolStripMenuItem.Enabled = true;
+                editSegmentButton.Enabled = true;
+                deleteSegmentButton.Enabled = true;
             }
         }
+        private void HomeDataGrid_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // Cell editing stuff. 
+        {
+            string headerText = homeDataGrid.Columns[e.ColumnIndex].HeaderText;
+            if (!headerText.Equals("Name")) return; // Aborts if for some reason the cell being edited isn't in the right column. 
 
+            int index = homeDataGrid.CurrentCell.RowIndex;
+            string oldName = homeDataGrid.Rows[index].Cells[1].Value.ToString();
+
+            if (string.IsNullOrEmpty(e.FormattedValue.ToString()))
+            {
+                MessageBox.Show("Name cannot be empty.", "Rename error", MessageBoxButtons.OK);
+                e.Cancel = true;
+            }
+            else if (e.FormattedValue.ToString() != oldName)
+            {
+                DialogResult result;
+                string msg = "Are you sure you want to rename " + oldName + " to " + e.FormattedValue.ToString() + "?";
+                result = MessageBox.Show(msg, "Rename confirmation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
+                    int ind = Int32.Parse(temp);
+                    ind = IndexHunt(ind, true);
+                    Globals.segments[ind].SegName = e.FormattedValue.ToString();
+                }
+                else
+                {
+                    e.Cancel = true;
+                    homeDataGrid.CancelEdit();
+                }
+            }
+        }
+        //
+        // Menu strip stuff.
+        //
         private void MenuStripOpen_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFile = new()
@@ -202,7 +263,7 @@ namespace MaterialsApp
                             Globals.segments = loadTest;
                             saveOk = false;
                         }
-                        SaveEnable();
+                        ControlEnable();
 
                         if (saveOk)
                         {
@@ -274,11 +335,6 @@ namespace MaterialsApp
             af.ShowDialog();
         }
 
-        private void HomeForm_Load(object sender, EventArgs e)
-        {
-            SaveEnable();
-        }
-
         private void MenuStripNew_Click(object sender, EventArgs e) // It doesn't like it if I add a third variable to the Click event. 
         {
             MenuStripNewWorkaround();
@@ -286,6 +342,10 @@ namespace MaterialsApp
 
         private void MenuStripNewWorkaround(int newType = 0) // 0 is the first time it's fired, 1 means it's either saved or ignored, 2 means cancelled
         {
+            if (!isDirty)
+            {
+                newType = 1; // Avoids a bug where the user can't create a new project if they load an existing project then immediately try to start a new one. 
+            }
             switch (newType)
             {
                 case 0:
@@ -295,6 +355,7 @@ namespace MaterialsApp
                 case 1:
                     Application.Restart();
                     break;
+                // 2 doesn't have a case but is an expected value. In the scenario where the user tries to open a new project without saving, if they hit cancel, this dodges the act of restarting the application.
             }
         }
 
@@ -337,40 +398,8 @@ namespace MaterialsApp
                 } catch { } // Doesn't allow me to tryparse to avoid an exception, so instead I'll do a trycatch without a catch. 
             }
         }
-
-        private void HomeDataGrid_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {
-            string headerText = homeDataGrid.Columns[e.ColumnIndex].HeaderText;
-            if (!headerText.Equals("Name")) return; // Aborts if for some reason the cell being edited isn't in the right column. 
-
-            int index = homeDataGrid.CurrentCell.RowIndex;
-            string oldName = homeDataGrid.Rows[index].Cells[1].Value.ToString();
-
-            if (string.IsNullOrEmpty(e.FormattedValue.ToString()))
-            {
-                MessageBox.Show("Name cannot be empty.", "Rename error", MessageBoxButtons.OK);
-                e.Cancel = true;
-            } else if (e.FormattedValue.ToString() != oldName)
-            {
-                DialogResult result;
-                string msg = "Are you sure you want to rename " + oldName + " to " + e.FormattedValue.ToString() + "?";
-                result = MessageBox.Show(msg, "Rename confirmation", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
-                    int ind = Int32.Parse(temp);
-                    ind = IndexHunt(ind, true);
-                    Globals.segments[ind].SegName = e.FormattedValue.ToString();
-                }
-                else
-                {
-                    e.Cancel = true;
-                    homeDataGrid.CancelEdit();
-                }
-            }
-        }
     }
-    public class Segment
+    public class Segment // Ya bois.
     {
         public string SegType { get; set; }
         public string SegName { get; set; }
@@ -381,7 +410,7 @@ namespace MaterialsApp
 
     public static class Globals
     {
-        public static List<Segment> segments = new();
+        public static List<Segment> segments = new(); // Ya bois home.
         public static string filepath;
     }
 }
