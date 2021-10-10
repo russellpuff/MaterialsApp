@@ -409,6 +409,22 @@ namespace MaterialsApp
             quantityTextBox.Text = string.Empty;
             unitCostTextBox.Text = string.Empty;
         }
+
+        private void WorkspaceForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isDirty)
+            {
+                DialogResult result;
+                result = MessageBox.Show("You have unsaved changes, are you sure you want to close the form?", "Unsaved changes", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    this.DialogResult = DialogResult.Cancel;
+                } else
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
     }
 
     public class SegmentItemEntry

@@ -312,6 +312,7 @@ namespace MaterialsApp
             this.Name = "WorkspaceForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Workspace";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WorkspaceForm_FormClosing);
             this.Load += new System.EventHandler(this.WorkspaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.workspaceDataGrid)).EndInit();
             this.workspaceTableLayout.ResumeLayout(false);
