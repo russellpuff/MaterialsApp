@@ -60,7 +60,7 @@ namespace MaterialsApp
             this.newSegmentButton.Location = new System.Drawing.Point(3, 3);
             this.newSegmentButton.Name = "newSegmentButton";
             this.newSegmentButton.Size = new System.Drawing.Size(71, 30);
-            this.newSegmentButton.TabIndex = 6;
+            this.newSegmentButton.TabIndex = 1;
             this.newSegmentButton.Text = "New";
             this.newSegmentButton.UseVisualStyleBackColor = true;
             this.newSegmentButton.Click += new System.EventHandler(this.NewSegmentButton_Click);
@@ -84,7 +84,7 @@ namespace MaterialsApp
             this.homeDataGrid.RowTemplate.Height = 25;
             this.homeDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.homeDataGrid.Size = new System.Drawing.Size(303, 342);
-            this.homeDataGrid.TabIndex = 7;
+            this.homeDataGrid.TabIndex = 0;
             this.homeDataGrid.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.HomeDataGrid_CellValidating);
             // 
             // typeColumn
@@ -121,7 +121,7 @@ namespace MaterialsApp
             this.editSegmentButton.Location = new System.Drawing.Point(115, 3);
             this.editSegmentButton.Name = "editSegmentButton";
             this.editSegmentButton.Size = new System.Drawing.Size(71, 30);
-            this.editSegmentButton.TabIndex = 8;
+            this.editSegmentButton.TabIndex = 2;
             this.editSegmentButton.Text = "Edit";
             this.editSegmentButton.UseVisualStyleBackColor = true;
             this.editSegmentButton.Click += new System.EventHandler(this.EditSegmentButton_Click);
@@ -132,7 +132,7 @@ namespace MaterialsApp
             this.deleteSegmentButton.Location = new System.Drawing.Point(227, 3);
             this.deleteSegmentButton.Name = "deleteSegmentButton";
             this.deleteSegmentButton.Size = new System.Drawing.Size(73, 30);
-            this.deleteSegmentButton.TabIndex = 9;
+            this.deleteSegmentButton.TabIndex = 3;
             this.deleteSegmentButton.Text = "Delete";
             this.deleteSegmentButton.UseVisualStyleBackColor = true;
             this.deleteSegmentButton.Click += new System.EventHandler(this.DeleteSegmentButton_Click);
@@ -144,7 +144,7 @@ namespace MaterialsApp
             this.homeGrandTotalLabel.Location = new System.Drawing.Point(9, 425);
             this.homeGrandTotalLabel.Name = "homeGrandTotalLabel";
             this.homeGrandTotalLabel.Size = new System.Drawing.Size(303, 40);
-            this.homeGrandTotalLabel.TabIndex = 10;
+            this.homeGrandTotalLabel.TabIndex = 4;
             this.homeGrandTotalLabel.Text = "Grand Total\r\n$0.00";
             this.homeGrandTotalLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -192,35 +192,35 @@ namespace MaterialsApp
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.MenuStripNew_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.MenuStripOpen_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.MenuStripSave_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.MenuStripSaveAs_Click);
             // 
             // viewReportToolStripMenuItem
             // 
             this.viewReportToolStripMenuItem.Name = "viewReportToolStripMenuItem";
-            this.viewReportToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.viewReportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.viewReportToolStripMenuItem.Text = "View Report";
             this.viewReportToolStripMenuItem.Click += new System.EventHandler(this.MenuStripViewReport_Click);
             // 

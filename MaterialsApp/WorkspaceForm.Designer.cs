@@ -60,7 +60,7 @@ namespace MaterialsApp
             this.addItemButton.Location = new System.Drawing.Point(3, 3);
             this.addItemButton.Name = "addItemButton";
             this.addItemButton.Size = new System.Drawing.Size(144, 39);
-            this.addItemButton.TabIndex = 4;
+            this.addItemButton.TabIndex = 8;
             this.addItemButton.Text = "Add Item";
             this.addItemButton.UseVisualStyleBackColor = true;
             this.addItemButton.Click += new System.EventHandler(this.AddItemButton_Click);
@@ -70,7 +70,7 @@ namespace MaterialsApp
             this.cancelWorkspaceButton.Location = new System.Drawing.Point(1053, 3);
             this.cancelWorkspaceButton.Name = "cancelWorkspaceButton";
             this.cancelWorkspaceButton.Size = new System.Drawing.Size(94, 39);
-            this.cancelWorkspaceButton.TabIndex = 5;
+            this.cancelWorkspaceButton.TabIndex = 11;
             this.cancelWorkspaceButton.Text = "Cancel";
             this.cancelWorkspaceButton.UseVisualStyleBackColor = true;
             this.cancelWorkspaceButton.Click += new System.EventHandler(this.CancelWorkspaceButton_Click);
@@ -82,7 +82,7 @@ namespace MaterialsApp
             this.saveWorkspaceButton.Location = new System.Drawing.Point(953, 3);
             this.saveWorkspaceButton.Name = "saveWorkspaceButton";
             this.saveWorkspaceButton.Size = new System.Drawing.Size(94, 39);
-            this.saveWorkspaceButton.TabIndex = 6;
+            this.saveWorkspaceButton.TabIndex = 10;
             this.saveWorkspaceButton.Text = "Save";
             this.saveWorkspaceButton.UseVisualStyleBackColor = true;
             this.saveWorkspaceButton.Click += new System.EventHandler(this.SaveWorkspaceButton_Click);
@@ -161,7 +161,7 @@ namespace MaterialsApp
             this.deleteItemButton.Location = new System.Drawing.Point(153, 3);
             this.deleteItemButton.Name = "deleteItemButton";
             this.deleteItemButton.Size = new System.Drawing.Size(144, 39);
-            this.deleteItemButton.TabIndex = 8;
+            this.deleteItemButton.TabIndex = 9;
             this.deleteItemButton.Text = "Delete Item";
             this.deleteItemButton.UseVisualStyleBackColor = true;
             this.deleteItemButton.Click += new System.EventHandler(this.DeleteItemButton_Click);
@@ -199,7 +199,7 @@ namespace MaterialsApp
             this.unitCostTextBox.Location = new System.Drawing.Point(949, 4);
             this.unitCostTextBox.Name = "unitCostTextBox";
             this.unitCostTextBox.Size = new System.Drawing.Size(94, 23);
-            this.unitCostTextBox.TabIndex = 13;
+            this.unitCostTextBox.TabIndex = 5;
             this.unitCostTextBox.TextChanged += new System.EventHandler(this.QuantityOrUnitCostTextBox_TextChanged);
             // 
             // itemComboBox
@@ -211,7 +211,7 @@ namespace MaterialsApp
             this.itemComboBox.Location = new System.Drawing.Point(3, 4);
             this.itemComboBox.Name = "itemComboBox";
             this.itemComboBox.Size = new System.Drawing.Size(148, 23);
-            this.itemComboBox.TabIndex = 9;
+            this.itemComboBox.TabIndex = 1;
             this.itemComboBox.SelectedIndexChanged += new System.EventHandler(this.ItemComboBox_SelectedIndexChanged);
             this.itemComboBox.TextChanged += new System.EventHandler(this.ItemComboBox_TextChanged);
             // 
@@ -224,7 +224,7 @@ namespace MaterialsApp
             this.materialComboBox.Location = new System.Drawing.Point(157, 4);
             this.materialComboBox.Name = "materialComboBox";
             this.materialComboBox.Size = new System.Drawing.Size(144, 23);
-            this.materialComboBox.TabIndex = 10;
+            this.materialComboBox.TabIndex = 2;
             // 
             // sizeDescTextBox
             // 
@@ -232,7 +232,7 @@ namespace MaterialsApp
             this.sizeDescTextBox.Location = new System.Drawing.Point(307, 4);
             this.sizeDescTextBox.Name = "sizeDescTextBox";
             this.sizeDescTextBox.Size = new System.Drawing.Size(536, 23);
-            this.sizeDescTextBox.TabIndex = 11;
+            this.sizeDescTextBox.TabIndex = 3;
             // 
             // quantityTextBox
             // 
@@ -240,7 +240,7 @@ namespace MaterialsApp
             this.quantityTextBox.Location = new System.Drawing.Point(849, 4);
             this.quantityTextBox.Name = "quantityTextBox";
             this.quantityTextBox.Size = new System.Drawing.Size(94, 23);
-            this.quantityTextBox.TabIndex = 12;
+            this.quantityTextBox.TabIndex = 4;
             this.quantityTextBox.TextChanged += new System.EventHandler(this.QuantityOrUnitCostTextBox_TextChanged);
             // 
             // clearButton
@@ -249,7 +249,7 @@ namespace MaterialsApp
             this.clearButton.Location = new System.Drawing.Point(1060, 4);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(75, 23);
-            this.clearButton.TabIndex = 14;
+            this.clearButton.TabIndex = 6;
             this.clearButton.Text = "Clear";
             this.clearButton.UseVisualStyleBackColor = true;
             this.clearButton.Click += new System.EventHandler(this.ClearButton_Click);
