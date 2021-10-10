@@ -104,9 +104,10 @@ namespace MaterialsApp
 
         private void EditSegmentButton_Click(object sender, EventArgs e)
         {
-            int index = homeDataGrid.CurrentCell.RowIndex;
-            if (index != -1)
+            
+            if (homeDataGrid.Rows.Count != 0)
             {
+                int index = homeDataGrid.CurrentCell.RowIndex;
                 string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
                 int tempID = Int32.Parse(temp);
                 int target = IndexHunt(tempID, true);
@@ -116,27 +117,30 @@ namespace MaterialsApp
 
         private void DeleteSegmentButton_Click(object sender, EventArgs e)
         {
-            int index = homeDataGrid.CurrentCell.RowIndex;
-            string tempType = homeDataGrid.Rows[index].Cells[0].Value.ToString();
-            string tempName = homeDataGrid.Rows[index].Cells[1].Value.ToString();
-            string tempMessage = "Are you sure you want to delete this " + tempType + " segment: \"" + tempName + "\"?";
-            DialogResult result;
-            result = MessageBox.Show(tempMessage, "Delete segment?", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
+            if (homeDataGrid.Rows.Count != 0)
             {
-                string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
-                int tempID = Int32.Parse(temp);
-                int target = IndexHunt(tempID, true);
+                int index = homeDataGrid.CurrentCell.RowIndex;
+                string tempType = homeDataGrid.Rows[index].Cells[0].Value.ToString();
+                string tempName = homeDataGrid.Rows[index].Cells[1].Value.ToString();
+                string tempMessage = "Are you sure you want to delete this " + tempType + " segment: \"" + tempName + "\"?";
+                DialogResult result;
+                result = MessageBox.Show(tempMessage, "Delete segment?", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    string temp = homeDataGrid.Rows[index].Cells[3].Value.ToString();
+                    int tempID = Int32.Parse(temp);
+                    int target = IndexHunt(tempID, true);
 
-                temp = homeDataGrid.Rows[index].Cells[2].Value.ToString();
-                temp = temp.Substring(1);
-                decimal tempCost = decimal.Parse(temp);
-                homeGrandTotal -= tempCost;
-                homeGrandTotalLabel.Text = grandTotalHeader + "\n" + homeGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
+                    temp = homeDataGrid.Rows[index].Cells[2].Value.ToString();
+                    temp = temp.Substring(1);
+                    decimal tempCost = decimal.Parse(temp);
+                    homeGrandTotal -= tempCost;
+                    homeGrandTotalLabel.Text = grandTotalHeader + "\n" + homeGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US"));
 
-                Globals.segments.RemoveAt(target);
-                homeDataGrid.Rows.RemoveAt(index);
-                SaveEnable();
+                    Globals.segments.RemoveAt(target);
+                    homeDataGrid.Rows.RemoveAt(index);
+                    SaveEnable();
+                }
             }
         }
 
