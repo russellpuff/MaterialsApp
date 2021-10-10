@@ -261,12 +261,13 @@ namespace MaterialsApp
 
         private void MenuStripAbout_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Materials List Estimator is a free report builder for constructon companies. It was created for the SDEV240 final project at ITCC by Ben Christmas and Brian LaTulip in C#.", "About", MessageBoxButtons.OK);
         }
 
         private void MenuStripDocumentation_Click(object sender, EventArgs e)
         {
-
+            AboutForm af = new();
+            af.ShowDialog();
         }
 
         private void HomeForm_Load(object sender, EventArgs e)

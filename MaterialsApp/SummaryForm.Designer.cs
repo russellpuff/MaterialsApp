@@ -37,7 +37,7 @@ namespace MaterialsApp
             this.sQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sUnitCostColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sTotalCostColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.exportCSVButton = new System.Windows.Forms.Button();
+            this.exportTSVButton = new System.Windows.Forms.Button();
             this.sGrandTotalLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.summaryDataGrid)).BeginInit();
             this.SuspendLayout();
@@ -138,15 +138,15 @@ namespace MaterialsApp
             this.sTotalCostColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.sTotalCostColumn.Width = 65;
             // 
-            // exportCSVButton
+            // exportTSVButton
             // 
-            this.exportCSVButton.Location = new System.Drawing.Point(12, 481);
-            this.exportCSVButton.Name = "exportCSVButton";
-            this.exportCSVButton.Size = new System.Drawing.Size(96, 30);
-            this.exportCSVButton.TabIndex = 9;
-            this.exportCSVButton.Text = "Export to .csv";
-            this.exportCSVButton.UseVisualStyleBackColor = true;
-            this.exportCSVButton.Click += new System.EventHandler(this.ExportCSVButton_Click);
+            this.exportTSVButton.Location = new System.Drawing.Point(12, 481);
+            this.exportTSVButton.Name = "exportTSVButton";
+            this.exportTSVButton.Size = new System.Drawing.Size(96, 30);
+            this.exportTSVButton.TabIndex = 9;
+            this.exportTSVButton.Text = "Export to .tsv";
+            this.exportTSVButton.UseVisualStyleBackColor = true;
+            this.exportTSVButton.Click += new System.EventHandler(this.ExportCSVButton_Click);
             // 
             // sGrandTotalLabel
             // 
@@ -165,7 +165,7 @@ namespace MaterialsApp
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1319, 522);
             this.Controls.Add(this.sGrandTotalLabel);
-            this.Controls.Add(this.exportCSVButton);
+            this.Controls.Add(this.exportTSVButton);
             this.Controls.Add(this.summaryDataGrid);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SummaryForm";
@@ -179,7 +179,7 @@ namespace MaterialsApp
         #endregion
 
         private System.Windows.Forms.DataGridView summaryDataGrid;
-        private System.Windows.Forms.Button exportCSVButton;
+        private System.Windows.Forms.Button exportTSVButton;
         private System.Windows.Forms.Label sGrandTotalLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn sInfoColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn sItemNameColumn;
