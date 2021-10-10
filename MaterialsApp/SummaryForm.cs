@@ -66,7 +66,15 @@ namespace MaterialsApp
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 string filepath = saveFile.FileName;
-                StreamWriter writer = new(filepath);
+                StreamWriter writer;
+                try
+                {
+                    writer = new(filepath);
+                } catch
+                {
+                    MessageBox.Show("There was a problem with the export. Are you trying to overwrite a file in use?", "Export error", MessageBoxButtons.OK);
+                    return;
+                }
                 writer.Write("Building Materials Cost Estimate");
                 writer.Write("\nInfo\tItem\tMaterial\tSize / Description\tQuantity\tUnit Cost\tTotal Cost");
 
@@ -96,6 +104,7 @@ namespace MaterialsApp
 
                 writer.Write("\nGrand total: {0}", sfGrandTotal.ToString("C", CultureInfo.GetCultureInfo("en-US")));
                 writer.Close();
+                MessageBox.Show("Successfully exported to .tsv\nThis file can be opened in a spreadsheet editor such as Excel for formatting, if promtpted to select delimiter type, the type is Tab.", "Export successful", MessageBoxButtons.OK);
             } 
         }
     }
