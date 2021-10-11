@@ -271,8 +271,17 @@ namespace MaterialsApp
             bool check = ValidateRowAdd();
             if (check)
             {
-                decimal unitCost = decimal.Parse(unitCostTextBox.Text);
-                decimal totalCost = unitCost * decimal.Parse(quantityTextBox.Text);
+                decimal unitCost = 0;
+                decimal totalCost = 0;
+                try
+                {
+                    unitCost = decimal.Parse(unitCostTextBox.Text);
+                    totalCost = unitCost * decimal.Parse(quantityTextBox.Text);
+                } catch
+                {
+                    MessageBox.Show("An error occured while trying to add your item. The quantity / unit cost may be too high.");
+                    return;
+                }
 
                 string[] row = new string[6] 
                 {
