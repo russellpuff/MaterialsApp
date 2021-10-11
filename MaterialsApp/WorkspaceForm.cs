@@ -279,7 +279,7 @@ namespace MaterialsApp
                     totalCost = unitCost * decimal.Parse(quantityTextBox.Text);
                 } catch
                 {
-                    MessageBox.Show("An error occured while trying to add your item. The quantity / unit cost may be too high.");
+                    MessageBox.Show("An error occured while trying to add your item. The quantity / unit cost may be too high.", "Item add error", MessageBoxButtons.OK);
                     return;
                 }
 
