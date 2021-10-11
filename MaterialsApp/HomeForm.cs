@@ -378,7 +378,13 @@ namespace MaterialsApp
                         MenuStripSave_Click(null, null);
                         break;
                     case DialogResult.Cancel:
-                        if ((int)sender != 1)
+                        try
+                        {
+                            if ((int)sender != 1)
+                            {
+                                e.Cancel = true;
+                            }
+                        } catch
                         {
                             e.Cancel = true;
                         }
