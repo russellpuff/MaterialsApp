@@ -149,11 +149,7 @@ exported by clicking the EXPORT TO .TSV button.
 		
 Contact
 =======
-This application was created by Ben Christmas and Brian LaTulip for SDEV240 final exam at
+This application was created by Benjamin Russell and Brian LaTulip for SDEV240 final exam at
 ITCC. While it is not meant for redistribution outside of the exam's parameters, if it has
 been shared somewhere and the project should be brought up beyond the scope of the exam and
-the class, interested parties can contact Ben at benalvinrussell@gmail.com*
-
-*Ben Christmas is changing his name to Ben Russell. By the time anyone reads this outside of
-the class, this process will be complete and old contact methods will be obsolete. This email
-is provided to future-proof the contact segment. 
+the class, interested parties can contact Ben at benalvinrussell@gmail.com
